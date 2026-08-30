@@ -38,10 +38,11 @@ int main(int argc, char **argv)
 
     initTextManager();
 
-    addText("Nintendo 3DS Edition", 1, -1, 190, 0.5f, 0.8, 1, false, clrWhite);
+    addText("Nintendo 3DS Edition",       1, -1, 190, 0.5f, 0.8, 1, false, clrWhite);
+    addText("v0.0.0", 0, 270, 220, 0.5f, 0.5, 0.5, true, clrWhite);
 
     addText("Start Game", 2, -1, 50,  0.5f, 1, 1, true,  clrWhite);
-    addText("Options",    2, -1, 105,   0.5f, 1, 1, true,  clrWhite);
+    addText("Options",    2, -1, 105, 0.5f, 1, 1, true,  clrWhite);
     addText("Quit Game",  2, -1, 160, 0.5f, 1, 1, true,  clrWhite);
     
 
@@ -52,6 +53,8 @@ int main(int argc, char **argv)
 		hidScanInput();
 		u32 kDown = hidKeysDown();
 		//u32 kHeld= hidKeysHeld();
+        touchPosition touch;
+        hidTouchRead(&touch);
 		if (kDown & KEY_START) break; // break in order to return to hbmenu
 		//------------------------------------
 

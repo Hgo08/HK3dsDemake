@@ -31,6 +31,10 @@ include $(DEVKITARM)/3ds_rules
 #     - icon.png
 #     - <libctru folder>/default_icon.png
 #---------------------------------------------------------------------------------
+APP_TITLE := Hollow Knight: 3DS Edition
+APP_DESCRIPTION := Remake of Hollow Knight for the 3DS (old & new) :)
+APP_AUTHOR := Hgo08
+
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
 SOURCES		:=	source
