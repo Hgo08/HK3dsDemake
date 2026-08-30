@@ -8,12 +8,6 @@ C2D_Image menu_banner;
 C2D_Image title_banner;
 
 bool assets_init(void) {
-    // Initialize RomFS
-    if (R_FAILED(romfsInit())) {
-        printf("Error: Failed to initialize RomFS.\n");
-        return false;
-    }
-
     // Load sprite sheets
     title_texture_sheet = C2D_SpriteSheetLoad("romfs:/title-screen.t3x");
     menu_texture_sheet = C2D_SpriteSheetLoad("romfs:/menu-screen.t3x");
