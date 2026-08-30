@@ -3,8 +3,10 @@
 
 #include <citro2d.h>
 
-#define SCREEN_WIDTH  400
-#define SCREEN_HEIGHT 240
+#define UP_SCREEN_WIDTH    400
+#define BOTT_SCREEN_WIDTH  320
+#define UP_SCREEN_HEIGHT   240
+#define BOTT_SCREEN_HEIGHT 240
 
 //colors
 const u32 clrRed          = C2D_Color32(0xFF, 0x00, 0x00, 0xFF);

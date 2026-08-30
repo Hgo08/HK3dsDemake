@@ -37,10 +37,13 @@ int main(int argc, char **argv)
     }
 
     initTextManager();
-    addText("HOLLOW KNIGHT", 1, 10, 10, 0.5f, 1.0f, 1.0f, false, C2D_Color32(255, 0, 0, 255));
-    addText("HOLLOW KNIGHT", 2, 10, 20, 0.5f, 1, 1, false, clrWhite);
-    addText("HOLLOW KNIGHT", 1, 10, 10, 0.5f, 1.0f, 1.0f, true, C2D_Color32(255, 0, 0, 255));
-    addText("HOLLOW KNIGHT", 2, 10, 20, 0.5f, 1, 1, true, clrWhite);
+
+    addText("Nintendo 3DS Edition", 1, -1, 190, 0.5f, 0.8, 1, false, clrWhite);
+
+    addText("Start Game", 2, -1, 50,  0.5f, 1, 1, true,  clrWhite);
+    addText("Options",    2, -1, 105,   0.5f, 1, 1, true,  clrWhite);
+    addText("Quit Game",  2, -1, 160, 0.5f, 1, 1, true,  clrWhite);
+    
 
 	// Main loop
 	while (aptMainLoop())

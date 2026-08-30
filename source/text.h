@@ -12,15 +12,21 @@ struct TextData {
     float x, y, z;
     float scaleX, scaleY;
     u32 color;
-    bool screenTarget;
+    bool bottomScreen;
 };
 
 extern TextData texts[30];
 
 void initTextManager(void);
-void addText(const std::string& text, u8 fontNum, float x, float y, float z, float scaleX, float scaleY, bool screenTarget, u32 color = C2D_Color32(255, 255, 255, 255));
-void textRender(bool screenTarget);
+int addText(const std::string& text, u8 fontNum, float x, float y, float z, float scaleX, float scaleY, bool bottomScreen, u32 color = C2D_Color32(255, 255, 255, 255));
+void textRender(bool bottomScreen);
 void textExit(void);
+
+void clearTexts(void);
+void setTextColor(u16 id, u32 color);
+void setTextPosition(u16 id, float x, float y);
+void updateTextString(u16 id, const std::string& text, u8 fontNum);
+C2D_Text getTextData(u16 id);
 
 
 #endif
