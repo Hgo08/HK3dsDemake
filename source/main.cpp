@@ -37,9 +37,10 @@ int main(int argc, char **argv)
     }
 
     initTextManager();
-    addText("HOLLOW KNIGHT", 1, 10, 10, 0.5f, 1.0f, 1.0f, C2D_Color32(255, 0, 0, 255));
-    addText("HOLLOW KNIGHT", 2, 10, 20, 0.5f, 1, 1, clrWhite);
-
+    addText("HOLLOW KNIGHT", 1, 10, 10, 0.5f, 1.0f, 1.0f, false, C2D_Color32(255, 0, 0, 255));
+    addText("HOLLOW KNIGHT", 2, 10, 20, 0.5f, 1, 1, false, clrWhite);
+    addText("HOLLOW KNIGHT", 1, 10, 10, 0.5f, 1.0f, 1.0f, true, C2D_Color32(255, 0, 0, 255));
+    addText("HOLLOW KNIGHT", 2, 10, 20, 0.5f, 1, 1, true, clrWhite);
 
 	// Main loop
 	while (aptMainLoop())
@@ -58,13 +59,14 @@ int main(int argc, char **argv)
         C2D_TargetClear(targets.top, clrBlack);
         C2D_SceneBegin(targets.top);
         C2D_DrawImageAt(title_banner, -64.0f, 0.0f, 0.0f, NULL, 1.0f, 1.0f);
+        textRender(false);
 
         // Bottom Screen
         C2D_TargetClear(targets.bottom, clrBlack);
         C2D_SceneBegin(targets.bottom);
 
         C2D_DrawImageAt(menu_banner, -96.0f, 0.0f, 0.0f, NULL, 1.0f, 1.0f);
-        textRender();
+        textRender(true);
 
 
         C3D_FrameEnd(0);
