@@ -8,6 +8,7 @@
 
 //colors
 const u32 clrRed          = C2D_Color32(0xFF, 0x00, 0x00, 0xFF);
+const u32 clrBlack        = C2D_Color32(0, 0, 0, 255);
 const u32 BGColor         = C2D_Color32(0xFF, 0xD8, 0xB0, 0x68);
 
 
