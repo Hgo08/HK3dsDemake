@@ -1,41 +1,70 @@
 #include <3ds.h>
+#include <citro2d.h>
 #include <stdio.h>
+
+#include "common.h"
+
 
 int main(int argc, char **argv)
 {
+	// Init libs
 	gfxInitDefault();
+    C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
+    C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
+    C2D_Prepare();
+	// console to bottom screen
+    consoleInit(GFX_BOTTOM, NULL);
+	// graphics target (top screen)
+	C3D_RenderTarget* top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
 
-	//Initialize console on top screen. Using NULL as the second argument tells the console library to use the internal console structure as current one
-	consoleInit(GFX_TOP, NULL);
+	// fps counter variables
+	u64 lastTick = svcGetSystemTick();
+    double fps = 0.0;
+    double frameTime = 0.0;
 
-	//Move the cursor to row 15 and column 19 and then prints "Hello World!"
-	//To move the cursor you have to print "\x1b[r;cH", where r and c are respectively
-	//the row and column where you want your cursor to move
-	//The top screen has 30 rows and 50 columns
-	//The bottom screen has 30 rows and 40 columns
-	printf("\x1b[16;20H:)");
-
-	printf("\x1b[30;16HPress Start to exit.");
 
 	// Main loop
 	while (aptMainLoop())
 	{
-		//Scan all the inputs. This should be done once for each frame
+		// inputs -----------------------------
 		hidScanInput();
 
-		//hidKeysDown returns information about which buttons have been just pressed (and they weren't in the previous frame)
+		//when key just pressed
 		u32 kDown = hidKeysDown();
+		//when key held pressed
+		u32 kHeld= hidKeysHeld();
 
 		if (kDown & KEY_START) break; // break in order to return to hbmenu
+		//------------------------------------
 
-		// Flush and swap framebuffers
-		gfxFlushBuffers();
-		gfxSwapBuffers();
+		// fps counter fancy shit-------------
+        u64 currentTick = svcGetSystemTick();
+        u64 deltaTicks = currentTick - lastTick;
+        lastTick = currentTick;
+        frameTime = (double)deltaTicks / CPU_TICKS_PER_MSEC;
+        fps = (frameTime > 0) ? (1000.0 / frameTime) : 0.0;
+		
+		printf("\x1b[1;1HFPS:     %.2f fps", fps);
+		//------------------------------------
 
-		//Wait for VBlank
-		gspWaitForVBlank();
+
+		// Render the scene --------------------
+		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+		C2D_TargetClear(top, 0);
+		C2D_SceneBegin(top);
+
+		C2D_DrawRectangle(0,0,0,20,50,clrRed,clrRed,clrRed,clrRed);
+		
+		C3D_FrameEnd(0);
+		//--------------------------------------
+
+		//for 30fps aparently
+		//gspWaitForVBlank();
 	}
 
+	// Deinit libs
+	C2D_Fini();
+	C3D_Fini();
 	gfxExit();
 	return 0;
 }
