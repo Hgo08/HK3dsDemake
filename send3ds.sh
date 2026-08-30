@@ -1,0 +1,1 @@
+3dslink juego3ds.3dsx -a 192.168.0.18
