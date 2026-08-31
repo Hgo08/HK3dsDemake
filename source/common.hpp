@@ -32,12 +32,6 @@ struct Rect {
     }
 };
 
-enum GameState {
-    STATE_MENU,
-    STATE_PLAYING,
-    STATE_PAUSED
-};
-
 // detect if a touch is inside a box (for buttons)
 bool isTouchInRect(u16 px, u16 py, float rx, float ry, float rw, float rh);
 void C2D_DrawRectangleOutlineLines(float x, float y, float z, float w, float h, float thickness, u32 color);

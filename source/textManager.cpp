@@ -1,5 +1,5 @@
 #include <citro2d.h>
-#include "textManager.h"
+#include "textManager.hpp"
 #include "c2d/font.h"
 
 

@@ -1,21 +1,21 @@
 #include <3ds.h>
 #include <citro2d.h>
+#include <cmath>
 #include <cstddef>
 #include <stdio.h>
 #include <string>
 
 #include "3ds/services/hid.h"
 #include "c2d/base.h"
-#include "common.h"
-#include "graphics.h"
-#include "assets.h"
-#include "textManager.h"
+#include "common.hpp"
+#include "graphics.hpp"
+#include "assets.hpp"
+#include "textManager.hpp"
 
 int main(int argc, char **argv)
 {
 
 	GfxTargets targets;
-    GameState currentState = STATE_MENU;
 
     int selectedButton = 0;
 
@@ -32,13 +32,27 @@ int main(int argc, char **argv)
 
     // Initialize RomFS
     if (R_FAILED(romfsInit())) {
-        printf("Error: Failed to initialize RomFS.\n");
+        gfxInitDefault();
+	    consoleInit(GFX_TOP, NULL);
+        printf("Error: Failed to initialize RomFS. :(\n");
+        printf("Press START to exit...");
+        while (aptMainLoop()) {
+
+            hidScanInput();
+            if (hidKeysDown() & KEY_START) break;
+            gfxFlushBuffers();
+            gfxSwapBuffers();
+            gspWaitForVBlank();
+        }
         gfx_system_exit();
         return 0;
     }
 
     if (!assets_init()) {
-        printf("\nPress START to exit...");
+        gfxInitDefault();
+	    consoleInit(GFX_TOP, NULL);
+        printf("Error: Failed to load sprite sheets. :(\n");
+        printf("Press START to exit...");
         while (aptMainLoop()) {
             hidScanInput();
             if (hidKeysDown() & KEY_START) break;

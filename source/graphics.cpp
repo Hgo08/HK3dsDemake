@@ -1,4 +1,4 @@
-#include "graphics.h"
+#include "graphics.hpp"
 #include <3ds.h>
 
 bool gfx_system_init(GfxTargets* targets) {
