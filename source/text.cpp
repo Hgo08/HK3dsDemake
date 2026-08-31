@@ -36,9 +36,16 @@ int addText(const std::string& text, u8 fontNum, float x, float y, float z, floa
 	texts[totalTexts].scaleY = scaleY;
 	texts[totalTexts].bottomScreen = bottomScreen;
 	texts[totalTexts].color = color;
+	texts[totalTexts].active = true;
 
 	totalTexts++;
 	return id;
+}
+void toggleText(u16 id)
+{
+    if (id < totalTexts) {
+        texts[id].active = !texts[id].active;
+    }
 }
 void clearTexts(void)
 {
