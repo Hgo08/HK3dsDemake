@@ -11,10 +11,10 @@
 #include "text.h"
 
 void C2D_DrawRectangleOutlineLines(float x, float y, float z, float w, float h, float thickness, u32 color) {
-    C2D_DrawLine(x, y, color, x + w, y, color, thickness, z);         // Superior
-    C2D_DrawLine(x + w, y, color, x + w, y + h, color, thickness, z); // Derecho
-    C2D_DrawLine(x + w, y + h, color, x, y + h, color, thickness, z); // Inferior
-    C2D_DrawLine(x, y + h, color, x, y, color, thickness, z);         // Izquierdo
+    C2D_DrawLine(x,     y,     color, x + w, y,     color, thickness, z); // up
+    C2D_DrawLine(x + w, y,     color, x + w, y + h, color, thickness, z); // right
+    C2D_DrawLine(x + w, y + h, color, x,     y + h, color, thickness, z); // down
+    C2D_DrawLine(x,     y + h, color, x,     y,     color, thickness, z); // left
 }
 
 int main(int argc, char **argv)

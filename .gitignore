@@ -1,0 +1,9 @@
+.clangd
+compile_commands.json
+**/build/**
+*.3dsx
+*.elf
+*.smdh
+.devcontainer/devcontainer.json
+.vscode/**
+a.cpp
