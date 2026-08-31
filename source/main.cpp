@@ -52,15 +52,8 @@ int main(int argc, char **argv)
     TextManager::initFonts();
 
 
-    //addText("Nintendo 3DS Edition",       1, -1, 190, 0.5f, 0.8, 1, false, clrWhite);
-    //int debugTextID  = addText("v0.0.0", 0, 250, 200, 0.5f, 0.5, 0.5, true, clrWhite);
-    //int debugTextID2 = addText("v0.0.0", 0, 250, 220, 0.5f, 0.5, 0.5, true, clrWhite);
+    TextManager subtitle(2,"Nintendo 3DS Edition", -1, 190, 0.5f, 0.8, 1, false, clrWhite);
 
-    //int btn1Text = addText("Start Game", 2, -1, 50,  0.5f, 1, 1, true,  clrWhite);
-    //int btn2Text = addText("Options",    2, -1, 105, 0.5f, 1, 1, true,  clrWhite);
-    //int btn3Text = addText("Quit Game",  2, -1, 160, 0.5f, 1, 1, true,  clrWhite);
-
-    //size_t trajanFontID = TextManager.loadFont("romfs:/Trajan.bcfnt");
     //int btn1Text2 = TextManager.addText("Start Game", trajanFontID, -1, 55, 0.5, 1, 1, true);
     //int debugTextID22 = TextManager.addText("v0.0.0", 0, 150, 220, 0.5f, 0.5, 0.5, true);
 
@@ -84,78 +77,6 @@ int main(int argc, char **argv)
 		if (kDown & KEY_START) break; // break in order to return to hbmenu
 		//------------------------------------
 
-        // state based control logic ----------
-        if (currentState == STATE_MENU)
-        {
-            // Navegación con Cruceta/Stick
-            if (kDown & KEY_DUP && (selectedButton > 0)) selectedButton--;
-            if (kDown & KEY_DDOWN && (selectedButton < 2)) selectedButton++;
-
-            if (kHeld & KEY_TOUCH)
-            {
-                //updateTextString(debugTextID2, std::to_string(touch.px) + ", " + std::to_string(touch.py), 0);
-                //TextManager.setText(debugTextID22, std::to_string(touch.px) + ", " + std::to_string(touch.py), 0);
-                touchsText.setText(std::to_string(touch.px) + ", " + std::to_string(touch.py));
-                if (isTouchInRect(touch.px, touch.py, btnX, btn1Y, btnW, btnH)) {
-                    selectedButton = 0;
-                }
-                if (isTouchInRect(touch.px, touch.py, btnX, btn2Y, btnW, btnH)) {
-                    selectedButton = 1;
-                }
-                if (isTouchInRect(touch.px, touch.py, btnX, btn3Y, btnW, btnH)) {
-                    selectedButton = 2;
-                }
-            }
-            if (kDown & KEY_TOUCH){
-                if (isTouchInRect(touch.px, touch.py, btnX, btn1Y, btnW, btnH)) {
-                    //updateTextString(debugTextID, "BTN1", 0);
-                }
-                else if (isTouchInRect(touch.px, touch.py, btnX, btn2Y, btnW, btnH)) {
-                    //updateTextString(debugTextID, "BTN2", 0);
-                    //TextManager.setColor(btn1Text2, clrWhite);
-                    //setTextColor(btn1Text, clrWhite);
-                    //setTextColor(btn2Text, C2D_Color32(255, 255, 255, 100));
-                    //setTextColor(btn3Text, clrWhite);
-                }
-                else if (isTouchInRect(touch.px, touch.py, btnX, btn3Y, btnW, btnH)) {
-                    //updateTextString(debugTextID, "BTN3", 0);
-                    //TextManager.setColor(btn1Text2, clrWhite);
-                    //setTextColor(btn1Text, clrWhite);
-                    //setTextColor(btn2Text, clrWhite);
-                    //setTextColor(btn3Text, C2D_Color32(255, 255, 255, 100));
-                }
-            }
-
-            // Selección por Botón A
-            if (kDown & KEY_A) {
-                if (selectedButton == 0) {
-                    //updateTextString(debugTextID, "BTN1", 0);
-                    //currentState = STATE_PLAYING;
-                } else if (selectedButton == 1) {
-                    //updateTextString(debugTextID, "BTN2", 0);
-                } else if (selectedButton == 2) {
-                    //updateTextString(debugTextID, "BTN3", 0);
-                }
-
-            }
-            if (selectedButton == 0) {
-                //setTextColor(btn1Text, C2D_Color32(255, 255, 255, 100));
-                //setTextColor(btn2Text, clrWhite);
-                //setTextColor(btn3Text, clrWhite);
-                //TextManager.setColor(btn1Text2, C2D_Color32(255, 255, 255, 100));
-            } else if (selectedButton == 1) {
-                //setTextColor(btn1Text, clrWhite);
-                //setTextColor(btn2Text, C2D_Color32(255, 255, 255, 100));
-                //setTextColor(btn3Text, clrWhite);
-                //TextManager.setColor(btn1Text2, clrWhite);
-            } else if (selectedButton == 2) {
-                //setTextColor(btn1Text, clrWhite);
-                //setTextColor(btn2Text, clrWhite);
-                //setTextColor(btn3Text, C2D_Color32(255, 255, 255, 100));
-                //TextManager.setColor(btn1Text2, clrWhite);
-            }
-
-        }
 
 		// Frame rendering ----------------------------------------------
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
