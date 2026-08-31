@@ -9,10 +9,11 @@
 #define BOTT_SCREEN_HEIGHT 240
 
 //colors
-const u32 clrRed          = C2D_Color32(0xFF, 0x00, 0x00, 0xFF);
-const u32 clrBlack        = C2D_Color32(0, 0, 0, 255);
-const u32 clrWhite        = C2D_Color32(255, 255, 255, 255);
-const u32 BGColor         = C2D_Color32(0xFF, 0xD8, 0xB0, 0x68);
+const u32 clrRed             = C2D_Color32(0xFF, 0x00, 0x00, 0xFF);
+const u32 clrBlack           = C2D_Color32(0, 0, 0, 255);
+const u32 clrWhite           = C2D_Color32(255, 255, 255, 250);
+const u32 BGColor            = C2D_Color32(0xFF, 0xD8, 0xB0, 0x68);
+const u32 clrTranslucentBlue = C2D_Color32(0, 0, 255, 30);
 
 
 struct Vector2 {
@@ -28,6 +29,12 @@ struct Rect {
                 y < other.y + other.height &&
                 y + height > other.y);
     }
+};
+
+enum GameState {
+    STATE_MENU,
+    STATE_PLAYING,
+    STATE_PAUSED
 };
 
 // detect if a touch is inside a box (for buttons)
