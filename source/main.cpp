@@ -56,6 +56,7 @@ int main(int argc, char **argv)
         gfx_system_exit();
         return 0;
     }
+    TextManager::initFonts();
 
 
     //addText("Nintendo 3DS Edition",       1, -1, 190, 0.5f, 0.8, 1, false, clrWhite);
@@ -70,9 +71,11 @@ int main(int argc, char **argv)
     //int btn1Text2 = TextManager.addText("Start Game", trajanFontID, -1, 55, 0.5, 1, 1, true);
     //int debugTextID22 = TextManager.addText("v0.0.0", 0, 150, 220, 0.5f, 0.5, 0.5, true);
 
-    DynamicText touchsText("romfs:/Trajan.bcfnt", "asdasda", 150, 200, 1, 0.5, 0.5, true, clrWhite, 64);
+    TextManager btn1Text(2, "Start Game", -1,  50, 1, 1, 1, true, clrWhite, 9);
+    TextManager btn2Text(2, "Options",    -1, 105, 1, 1, 1, true, clrWhite, 6);
+    TextManager btn3Text(2, "Quit Game",  -1, 160, 1, 1, 1, true, clrWhite, 9);
 
-    
+    TextManager touchsText(2, "---", 150, 220, 1, 0.5, 0.5, true, clrWhite, 64);
 
 	// Main loop
 	while (aptMainLoop())
@@ -161,7 +164,6 @@ int main(int argc, char **argv)
 
         }
 
-
 		// Frame rendering ----------------------------------------------
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 
@@ -170,7 +172,7 @@ int main(int argc, char **argv)
         C2D_SceneBegin(targets.top);
 
         C2D_DrawImageAt(title_banner, -64.0f, 0.0f, 0.0f, NULL, 1.0f, 1.0f);
-        DynamicText::renderAll(false);
+        TextManager::renderAll(false);
 
         // Bottom Screen
         C2D_TargetClear(targets.bottom, clrBlack);
@@ -183,7 +185,7 @@ int main(int argc, char **argv)
         C2D_DrawRectangleOutlineLines(btnX, btn3Y, 1, btnW, btnH, 1, clrTranslucentRed);
 
         
-        DynamicText::renderAll(true);
+        TextManager::renderAll(true);
 
         C3D_FrameEnd(0);
 
