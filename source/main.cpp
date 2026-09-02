@@ -9,8 +9,8 @@ int main(int argc, char **argv)
 
 	while (aptMainLoop())
     {
-        if (!GameManager.update(0.016f)) { GameManager.exit();  break; }
-        if (!GameManager.render(0.016f)) { GameManager.exit();  break; }
+        if (!GameManager.render()) { GameManager.exit();  break; }
+        if (!GameManager.update()) { GameManager.exit();  break; }
     }
     GameManager.exit();
 

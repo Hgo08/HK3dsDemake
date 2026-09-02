@@ -1,24 +1,28 @@
 #include <3ds.h>
 #include <citro2d.h>
 #include <cstddef>
+#include <memory>
+#include <vector>
 #include "GameManager.hpp"
-#include "c2d/base.h"
+#include "State.hpp"
+#include "../states/MainMenuState.hpp"
 
-static C3D_RenderTarget* top;
-static C3D_RenderTarget* bott;
+using namespace std;
 
-static u32 red = C2D_Color32(255, 0, 0, 255);
+C3D_RenderTarget* bott;
+C3D_RenderTarget* top;
 
-static C2D_SpriteSheet menu_texture_sheet = NULL;
-static C2D_SpriteSheet title_texture_sheet = NULL;
-static C2D_Image menu_banner;
-static C2D_Image title_banner;
+//u32 red = C2D_Color32(255, 0, 0, 255);
+
+
+
+vector<unique_ptr<State>> states;
 
 GameManager::GameManager(){}
 
 bool GameManager::init(){
     romfsInit();
-	cfguInit(); // Allow C2D_FontLoadSystem to work
+	cfguInit(); // only to allow C2D_FontLoadSystem to work
 	gfxInitDefault();
 	C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
 	C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
@@ -27,22 +31,12 @@ bool GameManager::init(){
 	top  = C2D_CreateScreenTarget(GFX_TOP,    GFX_LEFT);
 	bott = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
-	title_texture_sheet = C2D_SpriteSheetLoad("romfs:/title-screen.t3x");
-    menu_texture_sheet = C2D_SpriteSheetLoad("romfs:/menu-screen.t3x");
-	title_banner = C2D_SpriteSheetGetImage(title_texture_sheet, 0);
-    menu_banner = C2D_SpriteSheetGetImage(menu_texture_sheet, 0);
-    
 
-    if (!title_texture_sheet || !menu_texture_sheet) {
-        printf("Error: Failed to load sprite sheets.\n");
-        return false;
-    }
+    pushState(make_unique<MainMenuState>());
 
     return true;
 }
 bool GameManager::update(){
-    //state.update
-
     //Debug temporal exit -----------------------------------------
     hidScanInput();
 
@@ -51,44 +45,53 @@ bool GameManager::update(){
 	if (kDown & KEY_START)
 		return false; // break in order to return to hbmenu
     //-------------------------------------------------------------
+    
+    for (const auto &state : states) {
+        return state->update();
+    }
 
     return true;
 }
 bool GameManager::render(){
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+
 	C2D_TargetClear(top,  C2D_Color32(0x68, 0xB0, 0xD8, 0xFF));
 	C2D_SceneBegin(top);
 	//render TOP
-    //state.renderTop
-    if (title_texture_sheet) {
-        C2D_DrawImageAt(title_banner, -64.0f, 0.0f, 1, NULL, 1.0f, 1.0f);
+
+    // because its a unique pointer, we need to put the & so state is a reference of the member in the list
+    // without & state would be a new variable coping the one in states and we dont want multiplied states
+    for (const auto &state : states) {
+        state->renderTop();
     }
 
     C2D_TargetClear(bott, C2D_Color32(0x68, 0xB0, 0xD8, 0xFF));
 	C2D_SceneBegin(bott);
     //render BOTT
     //state.renderBot
-	if (menu_texture_sheet) {
-        C2D_DrawImageAt(menu_banner, -96.0f, 0.0f, 0, NULL, 1.0f, 1.0f);
+
+    // because its a unique pointer, we need to put the & so state is a reference of the member in the list
+    // without & state would be a new variable coping the one in states and we dont want multiplied states
+    for (const auto &state : states) {
+        state->renderBott();
     }
 
 	C3D_FrameEnd(0);
     return true;
 }
 void GameManager::exit(){
-    //state.exit
-	
-	if (menu_texture_sheet) {
-        C2D_SpriteSheetFree(menu_texture_sheet);
-        menu_texture_sheet = NULL;
-    }
-    if (title_texture_sheet) {
-        C2D_SpriteSheetFree(title_texture_sheet);
-        title_texture_sheet = NULL;
-    }
+
+    //clearing the list (vector) deletes all states objects so it calls the destructor and delete de variables/exit the libraries
+    states.clear();
+
     C2D_Fini();
 	C3D_Fini();
-	romfsExit();
-	cfguExit();
 	gfxExit();
+	cfguExit();
+	romfsExit();
+}
+
+// states functions
+void GameManager::pushState(unique_ptr<State> state) {
+    states.push_back(std::move(state));
 }
