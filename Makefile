@@ -37,7 +37,7 @@ APP_AUTHOR := Hgo08
 
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	sourceRefactor2 sourceRefactor2/core sourceRefactor2/states
+SOURCES		:=	source source/core source/states
 DATA		:=	data
 INCLUDES	:=	include
 GRAPHICS	:=	gfx
