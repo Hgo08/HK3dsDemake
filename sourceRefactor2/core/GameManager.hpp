@@ -7,7 +7,7 @@ public:
 
     GameManager();
     bool init();
-    bool update(float dt);
-    bool render(float dt);
+    bool update();
+    bool render();
     void exit();
 };

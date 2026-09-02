@@ -40,7 +40,7 @@ bool GameManager::init(){
 
     return true;
 }
-bool GameManager::update(float dt){
+bool GameManager::update(){
     //state.update
 
     //Debug temporal exit -----------------------------------------
@@ -54,7 +54,7 @@ bool GameManager::update(float dt){
 
     return true;
 }
-bool GameManager::render(float dt){
+bool GameManager::render(){
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(top,  C2D_Color32(0x68, 0xB0, 0xD8, 0xFF));
 	C2D_SceneBegin(top);
