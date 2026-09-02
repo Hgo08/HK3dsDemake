@@ -36,9 +36,10 @@ bool GameManager::update(){
 
     //-------------------------------------------------------------
     
-    for (const auto &state : states) {
-        state->update();
-    }
+    //for (const auto &state : states) {
+    //    state->update();
+    //}
+    return states.back()->update();
 
     return true;
 }
@@ -84,4 +85,7 @@ void GameManager::exit(){
 // states functions
 void GameManager::pushState(unique_ptr<State> state) {
     states.push_back(std::move(state));
+}
+void GameManager::popState() {
+    states.pop_back();
 }

@@ -19,5 +19,6 @@ public:
     void exit();
 
     void pushState(std::unique_ptr<State> state);
+    void popState();
 
 };

@@ -1,4 +1,5 @@
 #include "../core/GameManager.hpp"
+#include "3ds/services/hid.h"
 #include "c2d/base.h"
 #include "LevelState.hpp"
 
@@ -14,6 +15,14 @@ void LevelState::handleInput() {
 }
 
 bool LevelState::update() {
+    hidScanInput();
+
+	u32 kDown = hidKeysDown();
+	if (kDown & KEY_SELECT)
+		return false; // break in order to return to hbmenu
+    if (kDown & KEY_B)
+        game.popState();
+
     return true;
 }
 void LevelState::renderTop() {
