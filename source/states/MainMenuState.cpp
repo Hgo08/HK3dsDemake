@@ -1,7 +1,10 @@
 #include "MainMenuState.hpp"
+#include "LevelState.hpp"
+#include "../core/GameManager.hpp"
+#include <memory>
 
 
-MainMenuState::MainMenuState(){
+MainMenuState::MainMenuState(GameManager& game) : State(game) {
     init();
 }
 
@@ -39,8 +42,7 @@ bool MainMenuState::update() {
 	if (kDown & KEY_START)
 		return false; // break in order to return to hbmenu
     if (kDown & KEY_A)
-        return false;
-        //GameManager.
+        game.pushState(std::make_unique<LevelState>(game));
 
     return true;
 }
@@ -51,6 +53,6 @@ void MainMenuState::renderTop() {
 }
 void MainMenuState::renderBott() {
     if (menu_texture_sheet) {
-        C2D_DrawImageAt(menu_banner, -96.0f, 0.0f, 0, NULL, 1.0f, 1.0f);
+        C2D_DrawImageAt(menu_banner, -96.0f, 0.0f, 1, NULL, 1.0f, 1.0f);
     }
 }

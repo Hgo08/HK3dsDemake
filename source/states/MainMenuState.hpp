@@ -10,7 +10,8 @@ private:
     C2D_Image menu_banner;
     C2D_Image title_banner;
 public:
-    MainMenuState();
+    explicit MainMenuState(GameManager& game);
+
     ~MainMenuState() override;
     bool init() override;
     void handleInput() override;

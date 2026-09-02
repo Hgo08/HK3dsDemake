@@ -19,7 +19,7 @@ bool GameManager::init(){
 	bott = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
 
-    pushState(make_unique<MainMenuState>());
+    pushState(make_unique<MainMenuState>(*this));
 
     return true;
 }
@@ -37,7 +37,7 @@ bool GameManager::update(){
     //-------------------------------------------------------------
     
     for (const auto &state : states) {
-        return state->update();
+        state->update();
     }
 
     return true;

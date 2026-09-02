@@ -1,8 +1,13 @@
 #pragma once
 
+class GameManager;
+
 //template of a state class
 class State {
+protected:
+    GameManager& game;
 public:
+    explicit State(GameManager& game) : game(game) {}
     //virtual so we can override
     virtual ~State() = default;
     virtual bool init() = 0;

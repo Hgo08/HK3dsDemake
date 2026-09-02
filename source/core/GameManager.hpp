@@ -7,7 +7,6 @@
 class GameManager {
 private:
     std::vector<std::unique_ptr<State>> states;
-    
 
 public:
     C3D_RenderTarget* bott;
