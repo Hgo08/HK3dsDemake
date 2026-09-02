@@ -1,10 +1,5 @@
 #include "MainMenuState.hpp"
-#include <citro2d.h>
 
-C2D_SpriteSheet menu_texture_sheet = NULL;
-C2D_SpriteSheet title_texture_sheet = NULL;
-C2D_Image menu_banner;
-C2D_Image title_banner;
 
 MainMenuState::MainMenuState(){
     init();
@@ -38,6 +33,15 @@ bool MainMenuState::init() {
 }
 void MainMenuState::handleInput() {}
 bool MainMenuState::update() {
+    hidScanInput();
+
+	u32 kDown = hidKeysDown();
+	if (kDown & KEY_START)
+		return false; // break in order to return to hbmenu
+    if (kDown & KEY_A)
+        return false;
+        //GameManager.
+
     return true;
 }
 void MainMenuState::renderTop() {

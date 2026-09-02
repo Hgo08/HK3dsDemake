@@ -1,22 +1,9 @@
 #include <3ds.h>
-#include <citro2d.h>
-#include <cstddef>
-#include <memory>
-#include <vector>
 #include "GameManager.hpp"
 #include "State.hpp"
 #include "../states/MainMenuState.hpp"
 
 using namespace std;
-
-C3D_RenderTarget* bott;
-C3D_RenderTarget* top;
-
-//u32 red = C2D_Color32(255, 0, 0, 255);
-
-
-
-vector<unique_ptr<State>> states;
 
 GameManager::GameManager(){}
 
@@ -37,13 +24,16 @@ bool GameManager::init(){
     return true;
 }
 bool GameManager::update(){
-    //Debug temporal exit -----------------------------------------
-    hidScanInput();
+    //Backup exit way if there is no state -----------------------
+    if (states.empty()){
+        hidScanInput();
 
-	// Respond to user input
-	u32 kDown = hidKeysDown();
-	if (kDown & KEY_START)
-		return false; // break in order to return to hbmenu
+	    // Respond to user input
+	    u32 kDown = hidKeysDown();
+	    if (kDown & KEY_START)
+	    	return false; // break in order to return to hbmenu
+    }
+
     //-------------------------------------------------------------
     
     for (const auto &state : states) {
