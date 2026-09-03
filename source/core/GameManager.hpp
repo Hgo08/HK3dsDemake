@@ -7,6 +7,8 @@
 class GameManager {
 private:
     std::vector<std::unique_ptr<State>> states;
+    std::unique_ptr<State> nextState = nullptr;
+    bool changePending = false;
 
 public:
     C3D_RenderTarget* bott;

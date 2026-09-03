@@ -18,30 +18,28 @@ bool GameManager::init(){
 	top  = C2D_CreateScreenTarget(GFX_TOP,    GFX_LEFT);
 	bott = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
-
     pushState(make_unique<MainMenuState>(*this));
 
     return true;
 }
 bool GameManager::update(){
-    //Backup exit way if there is no state -----------------------
+    if (changePending) {
+        states.clear();
+        if (nextState) {
+            states.push_back(std::move(nextState));
+        }
+        changePending = false;
+    }
+
+    //Backup exit way if there is no state
     if (states.empty()){
         hidScanInput();
-
-	    // Respond to user input
 	    u32 kDown = hidKeysDown();
 	    if (kDown & KEY_START)
 	    	return false; // break in order to return to hbmenu
     }
 
-    //-------------------------------------------------------------
-    
-    //for (const auto &state : states) {
-    //    state->update();
-    //}
     return states.back()->update();
-
-    return true;
 }
 bool GameManager::render(){
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
@@ -59,7 +57,6 @@ bool GameManager::render(){
     C2D_TargetClear(bott, C2D_Color32(0x68, 0xB0, 0xD8, 0xFF));
 	C2D_SceneBegin(bott);
     //render BOTT
-    //state.renderBot
 
     // because its a unique pointer, we need to put the & so state is a reference of the member in the list
     // without & state would be a new variable coping the one in states and we dont want multiplied states
@@ -71,7 +68,6 @@ bool GameManager::render(){
     return true;
 }
 void GameManager::exit(){
-
     //clearing the list (vector) deletes all states objects so it calls the destructor and delete de variables/exit the libraries
     states.clear();
 
@@ -90,6 +86,6 @@ void GameManager::popState() {
     states.pop_back();
 }
 void GameManager::changeState(std::unique_ptr<State> state) {
-    while (!states.empty()) popState();
-    pushState(std::move(state));
+    nextState = std::move(state);
+    changePending = true;
 }
