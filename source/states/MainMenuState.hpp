@@ -18,4 +18,6 @@ public:
     bool update() override;
     void renderTop() override;
     void renderBott() override;
+
+    int centerText(float textWidth, bool topScreen = false);
 };
