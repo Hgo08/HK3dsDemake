@@ -1,10 +1,10 @@
 #pragma once
 #include "../core/State.hpp"
 
-class LevelState : public State {
+class OptionsState : public State {
 public:
-    explicit LevelState(GameManager& game);
-    ~LevelState() override = default;
+    explicit OptionsState(GameManager& game);
+    ~OptionsState() override = default;
 
     
     bool init() override;

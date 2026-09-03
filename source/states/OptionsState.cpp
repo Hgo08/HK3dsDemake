@@ -1,34 +1,36 @@
 #include "../core/GameManager.hpp"
 #include "3ds/services/hid.h"
 #include "c2d/base.h"
-#include "LevelState.hpp"
+#include "OptionsState.hpp"
+#include "MainMenuState.hpp"
 
-LevelState::LevelState(GameManager& game) : State(game) {
+OptionsState::OptionsState(GameManager& game) : State(game) {
     init();
 }
 
-bool LevelState::init() {
+bool OptionsState::init() {
     return true;
 }
-void LevelState::handleInput() {
+void OptionsState::handleInput() {
 
 }
 
-bool LevelState::update() {
+bool OptionsState::update() {
     hidScanInput();
 
 	u32 kDown = hidKeysDown();
 	if (kDown & KEY_SELECT)
 		return false; // break in order to return to hbmenu
     if (kDown & KEY_B)
-        game.popState();
+        game.changeState(std::make_unique<MainMenuState>(game));
+
 
     return true;
 }
-void LevelState::renderTop() {
+void OptionsState::renderTop() {
     C2D_DrawRectSolid(10, 10, 1, 100, 100, C2D_Color32(035, 112, 234, 200));
 }
 
-void LevelState::renderBott() {
+void OptionsState::renderBott() {
 
 }
