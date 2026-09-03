@@ -10,12 +10,16 @@
 const u32 colorWhite = C2D_Color32(255, 255, 255, 255);
 
 // bott screen res: 320x240
-const float btnW = 145;
-const float btnH = 45;
-const float btnX = (320 - btnW) / 2.0f; // 60.0f
-const float btn1Y = 40;
-const float btn2Y = 95;
-const float btn3Y = 150;
+float btn1W = 0;
+float btn2W = 0;
+float btn3W = 0;
+float btnH = 45;
+float btn1X = 0;
+float btn2X = 0;
+float btn3X = 0;
+float btn1Y = 40;
+float btn2Y = 95;
+float btn3Y = 150;
 
 
 MainMenuState::MainMenuState(GameManager& game) : State(game) {}
@@ -84,6 +88,13 @@ bool MainMenuState::init() {
     C2D_TextOptimize(&textObj[1]);
     C2D_TextOptimize(&textObj[2]);
 
+    btn1W = textObj[0].width+20;
+    btn2W = textObj[1].width+20;
+    btn3W = textObj[2].width+20;
+    btn1X = (320 - btn1W) / 2.0f;
+    btn2X = (320 - btn2W) / 2.0f;
+    btn3X = (320 - btn3W) / 2.0f;
+
     return true;
 
 
@@ -96,10 +107,10 @@ bool MainMenuState::update() {
     if (kDown & KEY_TOUCH) {
         hidTouchRead(&touch);
 
-        if (isTouchInRect(touch.px, touch.py, btnX, btn2Y, btnW, btnH)) {
+        if (isTouchInRect(touch.px, touch.py, btn2X, btn2Y, btn2W, btnH)) {
             game.changeState(std::make_unique<OptionsState>(game));
         }
-        if (isTouchInRect(touch.px, touch.py, btnX, btn3Y, btnW, btnH)) {
+        if (isTouchInRect(touch.px, touch.py, btn3X, btn3Y, btn3W, btnH)) {
             return false;
         }
     }
@@ -120,9 +131,10 @@ void MainMenuState::renderBott() {
     C2D_DrawText(&textObj[0], C2D_WithColor, centerText(textObj[0].width), 50,  0.5f, 1, 1, colorWhite);
 	C2D_DrawText(&textObj[1], C2D_WithColor, centerText(textObj[1].width), 105, 0.5f, 1, 1, colorWhite);
 	C2D_DrawText(&textObj[2], C2D_WithColor, centerText(textObj[2].width), 160, 0.5f, 1, 1, colorWhite);
-    C2D_DrawRectangleOutlineLines(btnX, btn1Y, 1, btnW, btnH);
-    C2D_DrawRectangleOutlineLines(btnX, btn2Y, 1, btnW, btnH);
-    C2D_DrawRectangleOutlineLines(btnX, btn3Y, 1, btnW, btnH);
+
+    C2D_DrawRectangleOutlineLines(btn1X, btn1Y, 1, btn1W, btnH);
+    C2D_DrawRectangleOutlineLines(btn2X, btn2Y, 1, btn2W, btnH);
+    C2D_DrawRectangleOutlineLines(btn3X, btn3Y, 1, btn3W, btnH);
 }
 int MainMenuState::centerText(float textWidth, bool topScreen) {
     if (topScreen) {
