@@ -7,13 +7,6 @@
 #include "c2d/text.h"
 #include <memory>
 
-u32 kDown;
-touchPosition touch;
-
-C2D_Font font;
-C2D_TextBuf textBuff;
-C2D_Text textObj[3];
-
 const u32 colorWhite = C2D_Color32(255, 255, 255, 255);
 
 // bott screen res: 320x240
