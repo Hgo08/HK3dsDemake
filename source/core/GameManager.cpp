@@ -18,16 +18,15 @@ bool GameManager::init(){
 	top  = C2D_CreateScreenTarget(GFX_TOP,    GFX_LEFT);
 	bott = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
-    auto mainMenu = std::make_unique<MainMenuState>(*this);
-    if (!mainMenu->init()) {
+    if (!pushState(std::move(std::make_unique<MainMenuState>(*this)))){
         return false;
     }
-
-    pushState(std::move(mainMenu));
 
     return true;
 }
 bool GameManager::update(){
+    hidScanInput();
+    
     if (changePending) {
         if (nextState) {
             if (!nextState->init()) {
@@ -41,13 +40,13 @@ bool GameManager::update(){
 
     //Backup exit way if there is no state
     if (states.empty()){
-        hidScanInput();
 	    u32 kDown = hidKeysDown();
 	    if (kDown & KEY_START)
 	    	return false; // break in order to return to hbmenu
+    } else{
+        return states.back()->update();
     }
-
-    return states.back()->update();
+    return true;
 }
 bool GameManager::render(){
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);

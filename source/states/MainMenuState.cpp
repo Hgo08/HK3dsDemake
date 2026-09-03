@@ -62,7 +62,17 @@ bool MainMenuState::init() {
 	font = C2D_FontLoad("romfs:/Trajan.bcfnt");
 
     if (!font) {
-        printf("Error: Failed to load font.\n");
+        consoleInit(GFX_TOP, NULL);
+        printf("Error: Failed to load font in MainMenu :(\n");
+        printf("Report this to the github repository\n");
+        printf("Press START to exit...");
+        while (aptMainLoop()) {
+            hidScanInput();
+            if (hidKeysDown() & KEY_START) break;
+            gfxFlushBuffers();
+            gfxSwapBuffers();
+            gspWaitForVBlank();
+        }
         return false;
     }
 
@@ -80,12 +90,12 @@ bool MainMenuState::init() {
 }
 void MainMenuState::handleInput() {}
 bool MainMenuState::update() {
-    hidScanInput();
-    hidTouchRead(&touch);
 
     kDown = hidKeysDown();
 
     if (kDown & KEY_TOUCH) {
+        hidTouchRead(&touch);
+
         if (isTouchInRect(touch.px, touch.py, btnX, btn2Y, btnW, btnH)) {
             game.changeState(std::make_unique<OptionsState>(game));
         }

@@ -14,8 +14,7 @@ void OptionsState::handleInput() {
 }
 
 bool OptionsState::update() {
-    hidScanInput();
-
+    
 	u32 kDown = hidKeysDown();
 	if (kDown & KEY_SELECT)
 		return false; // break in order to return to hbmenu

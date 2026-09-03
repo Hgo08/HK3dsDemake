@@ -9,8 +9,8 @@ private:
     u32 kDown;
     touchPosition touch;
 
-    C2D_Font font;
-    C2D_TextBuf textBuff;
+    C2D_Font font = nullptr;
+    C2D_TextBuf textBuff = nullptr;
     C2D_Text textObj[3];
     
     C2D_SpriteSheet menu_texture_sheet = NULL;
