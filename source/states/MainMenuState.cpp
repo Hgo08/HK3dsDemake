@@ -6,11 +6,23 @@
 #include "c2d/text.h"
 #include <memory>
 
+u32 kDown;
+touchPosition touch;
+
 C2D_Font font;
 C2D_TextBuf textBuff;
 C2D_Text textObj[3];
 
-u32 colorWhite = C2D_Color32(255, 255, 255, 255);
+const u32 colorWhite = C2D_Color32(255, 255, 255, 255);
+
+// bott screen res: 320x240
+const float btnW = 200;
+const float btnH = 45;
+const float btnX = (320 - btnW) / 2.0f; // 60.0f
+const float btn1Y = 40;
+const float btn2Y = 95;
+const float btn3Y = 150;
+
 
 MainMenuState::MainMenuState(GameManager& game) : State(game) {
     init();
@@ -68,12 +80,16 @@ bool MainMenuState::init() {
 void MainMenuState::handleInput() {}
 bool MainMenuState::update() {
     hidScanInput();
+    hidTouchRead(&touch);
 
-	u32 kDown = hidKeysDown();
-	if (kDown & KEY_START)
-		return false; // break in order to return to hbmenu
-    if (kDown & KEY_A)
-        game.changeState(std::make_unique<OptionsState>(game));
+    if (kDown & KEY_TOUCH) {
+        if (isTouchInRect(touch.px, touch.py, btnX, btn2Y, btnW, btnH)) {
+            game.changeState(std::make_unique<OptionsState>(game));
+        }
+        if (isTouchInRect(touch.px, touch.py, btnX, btn3Y, btnW, btnH)) {
+            return false;
+        }
+    }
 
     return true;
 }
@@ -85,12 +101,15 @@ void MainMenuState::renderTop() {
 void MainMenuState::renderBott() {
     if (menu_texture_sheet) {
         C2D_DrawImageAt(menu_banner, -96.0f, 0.0f, 0, NULL, 1.0f, 1.0f);
-
+    }
+    
+    // the text at 1 scale is ~10xp tall
     C2D_DrawText(&textObj[0], C2D_WithColor, centerText(textObj[0].width), 50,  0.5f, 1, 1, colorWhite);
 	C2D_DrawText(&textObj[1], C2D_WithColor, centerText(textObj[1].width), 105, 0.5f, 1, 1, colorWhite);
 	C2D_DrawText(&textObj[2], C2D_WithColor, centerText(textObj[2].width), 160, 0.5f, 1, 1, colorWhite);
-
-    }
+    C2D_DrawRectangleOutlineLines(btnX, btn1Y, 1, btnW, btnH);
+    C2D_DrawRectangleOutlineLines(btnX, btn2Y, 1, btnW, btnH);
+    C2D_DrawRectangleOutlineLines(btnX, btn3Y, 1, btnW, btnH);
 }
 int MainMenuState::centerText(float textWidth, bool topScreen) {
     if (topScreen) {
@@ -98,4 +117,13 @@ int MainMenuState::centerText(float textWidth, bool topScreen) {
     } else {
         return (320 - textWidth) * 0.5f;
     }
+}
+void MainMenuState::C2D_DrawRectangleOutlineLines(float x, float y, float z, float w, float h, float thickness, u32 color) {
+    C2D_DrawLine(x,     y,     color, x + w, y,     color, thickness, z); // up
+    C2D_DrawLine(x + w, y,     color, x + w, y + h, color, thickness, z); // right
+    C2D_DrawLine(x + w, y + h, color, x,     y + h, color, thickness, z); // down
+    C2D_DrawLine(x,     y + h, color, x,     y,     color, thickness, z); // left
+}
+bool MainMenuState::isTouchInRect(u16 touchX, u16 touchY, float rx, float ry, float rw, float rh) {
+    return (touchX >= rx && touchX <= rx + rw && touchY >= ry && touchY <= ry + rh);
 }
