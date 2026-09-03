@@ -10,7 +10,7 @@
 const u32 colorWhite = C2D_Color32(255, 255, 255, 255);
 
 // bott screen res: 320x240
-const float btnW = 200;
+const float btnW = 145;
 const float btnH = 45;
 const float btnX = (320 - btnW) / 2.0f; // 60.0f
 const float btn1Y = 40;
@@ -52,7 +52,7 @@ bool MainMenuState::init() {
     }
 
     textBuff = C2D_TextBufNew(128);
-	font = C2D_FontLoad("romfs:/Perpetua.bcfnt");
+	font = C2D_FontLoad("romfs:/Trajan.bcfnt");
 
     if (!font) {
         printf("Error: Failed to load font.\n");
@@ -99,7 +99,7 @@ void MainMenuState::renderBott() {
         C2D_DrawImageAt(menu_banner, -96.0f, 0.0f, 0, NULL, 1.0f, 1.0f);
     }
     
-    // the text at 1 scale is ~10xp tall
+    // the text at 1x scale is ~10px tall
     C2D_DrawText(&textObj[0], C2D_WithColor, centerText(textObj[0].width), 50,  0.5f, 1, 1, colorWhite);
 	C2D_DrawText(&textObj[1], C2D_WithColor, centerText(textObj[1].width), 105, 0.5f, 1, 1, colorWhite);
 	C2D_DrawText(&textObj[2], C2D_WithColor, centerText(textObj[2].width), 160, 0.5f, 1, 1, colorWhite);
