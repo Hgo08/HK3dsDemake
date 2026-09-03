@@ -1,4 +1,5 @@
 #include "MainMenuState.hpp"
+#include "3ds/services/hid.h"
 #include "OptionsState.hpp"
 #include "../core/GameManager.hpp"
 #include "c2d/base.h"
@@ -81,6 +82,8 @@ void MainMenuState::handleInput() {}
 bool MainMenuState::update() {
     hidScanInput();
     hidTouchRead(&touch);
+
+    kDown = hidKeysDown();
 
     if (kDown & KEY_TOUCH) {
         if (isTouchInRect(touch.px, touch.py, btnX, btn2Y, btnW, btnH)) {
