@@ -18,9 +18,7 @@ const float btn2Y = 95;
 const float btn3Y = 150;
 
 
-MainMenuState::MainMenuState(GameManager& game) : State(game) {
-    init();
-}
+MainMenuState::MainMenuState(GameManager& game) : State(game) {}
 
 MainMenuState::~MainMenuState() {
     if (menu_texture_sheet) {
@@ -45,9 +43,18 @@ bool MainMenuState::init() {
     menu_banner = C2D_SpriteSheetGetImage(menu_texture_sheet, 0);
 
     if (!title_texture_sheet || !menu_texture_sheet) {
-        //i need to put a console here
-        printf("Error: Failed to load sprite sheets. :(\n");
-        printf("Report this to github repository\n");
+	    consoleInit(GFX_TOP, NULL);
+        printf("Error: Failed to load sprite sheets in MainMenu :(\n");
+        printf("Report this to the github repository\n");
+        printf("Press START to exit...");
+        while (aptMainLoop()) {
+            hidScanInput();
+            if (hidKeysDown() & KEY_START) break;
+            gfxFlushBuffers();
+            gfxSwapBuffers();
+            gspWaitForVBlank();
+        }
+
         return false;
     }
 

@@ -20,7 +20,7 @@ public:
     bool render();
     void exit();
 
-    void pushState(std::unique_ptr<State> state);
+    bool pushState(std::unique_ptr<State> state);
     void popState();
     void changeState(std::unique_ptr<State> state);
 };

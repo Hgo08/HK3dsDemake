@@ -18,14 +18,22 @@ bool GameManager::init(){
 	top  = C2D_CreateScreenTarget(GFX_TOP,    GFX_LEFT);
 	bott = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
-    pushState(make_unique<MainMenuState>(*this));
+    auto mainMenu = std::make_unique<MainMenuState>(*this);
+    if (!mainMenu->init()) {
+        return false;
+    }
+
+    pushState(std::move(mainMenu));
 
     return true;
 }
 bool GameManager::update(){
     if (changePending) {
-        states.clear();
         if (nextState) {
+            if (!nextState->init()) {
+                return false;
+            }
+            states.clear();
             states.push_back(std::move(nextState));
         }
         changePending = false;
@@ -79,8 +87,12 @@ void GameManager::exit(){
 }
 
 // states functions
-void GameManager::pushState(unique_ptr<State> state) {
+bool GameManager::pushState(unique_ptr<State> state) {
+    if (!state->init()) {
+        return false;
+    }
     states.push_back(std::move(state));
+    return true;
 }
 void GameManager::popState() {
     states.pop_back();

@@ -4,9 +4,7 @@
 #include "OptionsState.hpp"
 #include "MainMenuState.hpp"
 
-OptionsState::OptionsState(GameManager& game) : State(game) {
-    init();
-}
+OptionsState::OptionsState(GameManager& game) : State(game) {}
 
 bool OptionsState::init() {
     return true;
