@@ -20,5 +20,5 @@ public:
 
     void pushState(std::unique_ptr<State> state);
     void popState();
-
+    void changeState(std::unique_ptr<State> state);
 };

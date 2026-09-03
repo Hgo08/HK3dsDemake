@@ -89,3 +89,7 @@ void GameManager::pushState(unique_ptr<State> state) {
 void GameManager::popState() {
     states.pop_back();
 }
+void GameManager::changeState(std::unique_ptr<State> state) {
+    while (!states.empty()) popState();
+    pushState(std::move(state));
+}
