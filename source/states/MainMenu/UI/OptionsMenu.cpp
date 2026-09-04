@@ -1,6 +1,6 @@
 #include "OptionsMenu.hpp"
-#include "../../core/GameManager.hpp"
-#include "../../core/MenuManager.hpp"
+#include "../../../core/GameManager.hpp"
+#include "../../../core/MenuManager.hpp"
 #include "MainMenuView.hpp"
 #include <memory>
 
