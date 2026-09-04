@@ -1,7 +1,7 @@
 #include <3ds.h>
 #include "GameManager.hpp"
 #include "State.hpp"
-#include "../states/MainMenuState.hpp"
+#include "../states/MainMenu/MainMenuState.hpp"
 
 using namespace std;
 

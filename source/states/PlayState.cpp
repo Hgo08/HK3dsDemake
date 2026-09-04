@@ -1,5 +1,5 @@
 #include "../core/GameManager.hpp"
-#include "MainMenuState.hpp"
+#include "MainMenu/MainMenuState.hpp"
 #include "PlayState.hpp"
 
 PlayState::PlayState(GameManager& game) : State(game) {}
