@@ -37,7 +37,7 @@ APP_AUTHOR := Hgo08
 
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source source/core source/states
+SOURCES		:=	$(shell find source -type d)
 DATA		:=	data
 INCLUDES	:=	include
 GRAPHICS	:=	gfx
