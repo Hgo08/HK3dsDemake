@@ -22,7 +22,8 @@ private:
 public:
     MainMenuView(MainMenuState& state, MenuManager& menuManager);
     ~MainMenuView() override = default;
-
+    
+    bool haveBackButton() const override { return false; }
     bool init() override;
     void update() override;
     void renderTop() override;

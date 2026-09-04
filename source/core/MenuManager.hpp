@@ -20,4 +20,5 @@ public:
     bool noMenu();
     void clear();
     void back();
+    bool haveBackButton();
 };

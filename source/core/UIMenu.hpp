@@ -3,6 +3,7 @@
 class UIMenu {
 public:
     virtual ~UIMenu() = default;
+    virtual bool haveBackButton() const { return true; }
 
     virtual bool init() = 0;
     virtual void update() = 0;

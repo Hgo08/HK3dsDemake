@@ -1,34 +1,32 @@
 #include "MainMenuState.hpp"
-#include "3ds/services/hid.h"
 #include "UI/MainMenuView.hpp"
 #include "../../core/GameManager.hpp"
+#include "../../core/TextButton.hpp"
 #include <3ds.h>
 #include <memory>
 
 float backButtonX;
 float backButtonY = 210;
-float backButtonScale = 0.5;
+float backButtonScale = 0.6;
 float backButtonHitboxOffsetX = 10;
 float backButtonHitboxOffsetY = 10;
+
+TextButton backButton;
 
 MainMenuState::MainMenuState(GameManager& game) : State(game) {}
 
 MainMenuState::~MainMenuState() {
     if (menu_texture_sheet) {
         C2D_SpriteSheetFree(menu_texture_sheet);
-        menu_texture_sheet = NULL;
     }
     if (title_texture_sheet) {
         C2D_SpriteSheetFree(title_texture_sheet);
-        title_texture_sheet = NULL;
     }
 	if (textBuff) {
         C2D_TextBufDelete(textBuff);
-        textBuff = nullptr;
     }
     if (font) {
         C2D_FontFree(font);
-        font = nullptr;
     }
 
 }
@@ -37,8 +35,8 @@ bool MainMenuState::init() {
     //imgs
     title_texture_sheet = C2D_SpriteSheetLoad("romfs:/title-screen.t3x");
     menu_texture_sheet = C2D_SpriteSheetLoad("romfs:/menu-screen.t3x");
-    if (!title_texture_sheet || !menu_texture_sheet)
-        return false;
+    if (!title_texture_sheet || !menu_texture_sheet) return false;
+
     title_banner = C2D_SpriteSheetGetImage(title_texture_sheet, 0);
     menu_banner = C2D_SpriteSheetGetImage(menu_texture_sheet, 0);
 
@@ -48,9 +46,7 @@ bool MainMenuState::init() {
     if (!font)
         return false;
 
-    C2D_TextFontParse(&textObj[0], font, textBuff, "Back");
-    C2D_TextOptimize(&textObj[0]);
-    
+    backButton.init(font, textBuff, "Back", 210.0f, 0.65f, [this](){menuManager.back();});
 
     //initialize first menu
     menuManager.changeMenu(std::make_unique<MainMenuView>(*this, menuManager));
@@ -70,9 +66,8 @@ bool MainMenuState::update() {
     if (kDown & KEY_TOUCH) {
         touchPosition touch;
         hidTouchRead(&touch);
-        if (isTouchInRect(touch.px, touch.py, backButtonX-backButtonHitboxOffsetX*backButtonScale*0.5, backButtonY-backButtonHitboxOffsetY*backButtonScale*0.5, textObj[0].width*backButtonScale+backButtonHitboxOffsetX*backButtonScale, 25*backButtonScale+backButtonHitboxOffsetY*backButtonScale)) {
-            menuManager.back();
-        }
+        if (menuManager.haveBackButton())
+            backButton.handleTouch(kDown, touch);
     }
 
 
@@ -88,10 +83,9 @@ void MainMenuState::renderBott() {
     if (menu_texture_sheet) {
         C2D_DrawImageAt(menu_banner, -96.0f, 0.0f, 0, NULL, 1.0f, 1.0f);
     }
-    //back bttn
-    C2D_DrawText(&textObj[0], C2D_WithColor, backButtonX, backButtonY,  0.5f, backButtonScale, backButtonScale, C2D_Color32(255, 255, 255, 255));
-    drawRectangleOutline(backButtonX-backButtonHitboxOffsetX*backButtonScale*0.5, backButtonY-backButtonHitboxOffsetY*backButtonScale*0.5, 0.5, textObj[0].width*backButtonScale+backButtonHitboxOffsetX*backButtonScale, 25*backButtonScale+backButtonHitboxOffsetY*backButtonScale);
-    
+
+    if (menuManager.haveBackButton())
+        backButton.render(true);
     menuManager.renderBott();
 }
 int MainMenuState::centerText(float textWidth, bool topScreen) {

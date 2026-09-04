@@ -52,3 +52,10 @@ void MenuManager::back() {
         activeMenu->back();
     }
 }
+
+bool MenuManager::haveBackButton() {
+    if (activeMenu) {
+        return activeMenu->haveBackButton();
+    }
+    return false;
+}

@@ -10,7 +10,6 @@ const u32 colorWhite = C2D_Color32(255, 255, 255, 255);
 
 C2D_TextBuf textBuff = nullptr;
 
-
 MainMenuView::MainMenuView(MainMenuState& state, MenuManager& menuManager)
     : state(state), menuManager(menuManager) {}
 
