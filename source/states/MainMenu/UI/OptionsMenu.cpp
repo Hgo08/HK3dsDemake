@@ -25,3 +25,7 @@ void OptionsMenu::renderTop() {
 void OptionsMenu::renderBott() {
 
 }
+
+void OptionsMenu::back() {
+    menuManager.changeMenu(std::make_unique<MainMenuView>(state, menuManager));
+}

@@ -1,7 +1,15 @@
 #include "MainMenuState.hpp"
+#include "3ds/services/hid.h"
 #include "UI/MainMenuView.hpp"
 #include "../../core/GameManager.hpp"
+#include <3ds.h>
 #include <memory>
+
+float backButtonX;
+float backButtonY = 210;
+float backButtonScale = 0.5;
+float backButtonHitboxOffsetX = 10;
+float backButtonHitboxOffsetY = 10;
 
 MainMenuState::MainMenuState(GameManager& game) : State(game) {}
 
@@ -34,11 +42,15 @@ bool MainMenuState::init() {
     title_banner = C2D_SpriteSheetGetImage(title_texture_sheet, 0);
     menu_banner = C2D_SpriteSheetGetImage(menu_texture_sheet, 0);
 
-    //text buff & font
-    textBuff = C2D_TextBufNew(32);
+    //text buff & font (used glyphs rn: 4)
+    textBuff = C2D_TextBufNew(8);
 	font = C2D_FontLoad("romfs:/Trajan.bcfnt");
     if (!font)
         return false;
+
+    C2D_TextFontParse(&textObj[0], font, textBuff, "Back");
+    C2D_TextOptimize(&textObj[0]);
+    
 
     //initialize first menu
     menuManager.changeMenu(std::make_unique<MainMenuView>(*this, menuManager));
@@ -47,11 +59,22 @@ bool MainMenuState::init() {
 }
 void MainMenuState::handleInput() {}
 bool MainMenuState::update() {
-    menuManager.update();
-
     if (menuManager.noMenu()) {
         return false;
     }
+
+    menuManager.update();
+
+    backButtonX = centerText(textObj[0].width*backButtonScale);
+    u32 kDown = hidKeysDown();
+    if (kDown & KEY_TOUCH) {
+        touchPosition touch;
+        hidTouchRead(&touch);
+        if (isTouchInRect(touch.px, touch.py, backButtonX-backButtonHitboxOffsetX*backButtonScale*0.5, backButtonY-backButtonHitboxOffsetY*backButtonScale*0.5, textObj[0].width*backButtonScale+backButtonHitboxOffsetX*backButtonScale, 25*backButtonScale+backButtonHitboxOffsetY*backButtonScale)) {
+            menuManager.back();
+        }
+    }
+
 
     return true;
 }
@@ -65,6 +88,9 @@ void MainMenuState::renderBott() {
     if (menu_texture_sheet) {
         C2D_DrawImageAt(menu_banner, -96.0f, 0.0f, 0, NULL, 1.0f, 1.0f);
     }
+    //back bttn
+    C2D_DrawText(&textObj[0], C2D_WithColor, backButtonX, backButtonY,  0.5f, backButtonScale, backButtonScale, C2D_Color32(255, 255, 255, 255));
+    drawRectangleOutline(backButtonX-backButtonHitboxOffsetX*backButtonScale*0.5, backButtonY-backButtonHitboxOffsetY*backButtonScale*0.5, 0.5, textObj[0].width*backButtonScale+backButtonHitboxOffsetX*backButtonScale, 25*backButtonScale+backButtonHitboxOffsetY*backButtonScale);
     
     menuManager.renderBott();
 }

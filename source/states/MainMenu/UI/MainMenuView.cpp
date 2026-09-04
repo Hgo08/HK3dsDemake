@@ -1,7 +1,10 @@
 #include "MainMenuView.hpp"
 #include "../MainMenuState.hpp"
+#include "../../PlayState.hpp"
+#include "../../../core/GameManager.hpp"
 #include "OptionsMenu.hpp"
 #include "../../../core/MenuManager.hpp"
+#include <memory>
 
 const u32 colorWhite = C2D_Color32(255, 255, 255, 255);
 
@@ -41,6 +44,8 @@ void MainMenuView::update() {
         hidTouchRead(&touch);
 
         if (state.isTouchInRect(touch.px, touch.py, btn1X, btn1Y, btn1W, btnH)) {
+            GameManager& game = state.getGame();
+            game.changeState(std::make_unique<PlayState>(game));
         }
         else if (state.isTouchInRect(touch.px, touch.py, btn2X, btn2Y, btn2W, btnH)) {
             menuManager.changeMenu(std::make_unique<OptionsMenu>(state, menuManager));
@@ -62,4 +67,8 @@ void MainMenuView::renderBott() {
     state.drawRectangleOutline(btn1X, btn1Y, 1, btn1W, btnH);
     state.drawRectangleOutline(btn2X, btn2Y, 1, btn2W, btnH);
     state.drawRectangleOutline(btn3X, btn3Y, 1, btn3W, btnH);
+}
+
+void MainMenuView::back() {
+    menuManager.changeMenu(std::make_unique<MainMenuView>(state, menuManager));
 }

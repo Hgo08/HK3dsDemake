@@ -46,3 +46,9 @@ bool MenuManager::noMenu() {
 void MenuManager::clear() {
     activeMenu = nullptr;
 }
+
+void MenuManager::back() {
+    if (activeMenu) {
+        activeMenu->back();
+    }
+}
