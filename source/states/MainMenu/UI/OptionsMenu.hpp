@@ -11,13 +11,7 @@ private:
     MainMenuState& state;
     MenuManager& menuManager;
 
-    C2D_Text textObj[3];
-    float btn1W = 0, btn2W = 0, btn3W = 0;
-    float btn1X = 0, btn2X = 0, btn3X = 0;
-    const float btnH = 45.0f;
-    const float btn1Y = 40.0f;
-    const float btn2Y = 95.0f;
-    const float btn3Y = 150.0f;
+    C2D_Text textObj;
 
 public:
     OptionsMenu(MainMenuState& state, MenuManager& menuManager);

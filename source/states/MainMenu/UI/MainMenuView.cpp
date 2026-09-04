@@ -1,14 +1,12 @@
 #include "MainMenuView.hpp"
+#include "OptionsMenu.hpp"
 #include "../MainMenuState.hpp"
 #include "../../PlayState.hpp"
 #include "../../../core/GameManager.hpp"
-#include "OptionsMenu.hpp"
 #include "../../../core/MenuManager.hpp"
 #include <memory>
 
 const u32 colorWhite = C2D_Color32(255, 255, 255, 255);
-
-C2D_TextBuf textBuff = nullptr;
 
 MainMenuView::MainMenuView(MainMenuState& state, MenuManager& menuManager)
     : state(state), menuManager(menuManager) {}
