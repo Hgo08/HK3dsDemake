@@ -5,12 +5,6 @@
 #include <3ds.h>
 #include <memory>
 
-float backButtonX;
-float backButtonY = 210;
-float backButtonScale = 0.6;
-float backButtonHitboxOffsetX = 10;
-float backButtonHitboxOffsetY = 10;
-
 TextButton backButton;
 
 MainMenuState::MainMenuState(GameManager& game) : State(game) {}
@@ -61,7 +55,6 @@ bool MainMenuState::update() {
 
     menuManager.update();
 
-    backButtonX = centerText(textObj[0].width*backButtonScale);
     u32 kDown = hidKeysDown();
     if (kDown & KEY_TOUCH) {
         touchPosition touch;
