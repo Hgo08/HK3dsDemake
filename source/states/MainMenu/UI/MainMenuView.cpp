@@ -5,13 +5,18 @@
 
 const u32 colorWhite = C2D_Color32(255, 255, 255, 255);
 
+C2D_TextBuf textBuff = nullptr;
+
+
 MainMenuView::MainMenuView(MainMenuState& state, MenuManager& menuManager)
     : state(state), menuManager(menuManager) {}
 
 bool MainMenuView::init() {
-    C2D_TextFontParse(&textObj[0], state.font, state.textBuff, "Start Game");
-    C2D_TextFontParse(&textObj[1], state.font, state.textBuff, "Options");
-    C2D_TextFontParse(&textObj[2], state.font, state.textBuff, "Exit Game");
+    textBuff = C2D_TextBufNew(32);
+
+    C2D_TextFontParse(&textObj[0], state.font, textBuff, "Start Game");
+    C2D_TextFontParse(&textObj[1], state.font, textBuff, "Options");
+    C2D_TextFontParse(&textObj[2], state.font, textBuff, "Exit Game");
 
     C2D_TextOptimize(&textObj[0]);
     C2D_TextOptimize(&textObj[1]);
