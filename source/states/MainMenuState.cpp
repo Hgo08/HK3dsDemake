@@ -1,10 +1,7 @@
 #include "MainMenuState.hpp"
-#include "3ds/services/hid.h"
 #include "OptionsState.hpp"
 #include "../core/GameManager.hpp"
-#include "c2d/base.h"
-#include "c2d/font.h"
-#include "c2d/text.h"
+#include "PlayState.hpp"
 #include <memory>
 
 const u32 colorWhite = C2D_Color32(255, 255, 255, 255);
@@ -38,7 +35,6 @@ MainMenuState::~MainMenuState() {
 
 }
 
-//TODO: fix return value of function does nothing, program should stop if return false
 bool MainMenuState::init() {
 
     title_texture_sheet = C2D_SpriteSheetLoad("romfs:/title-screen.t3x");
@@ -106,9 +102,13 @@ bool MainMenuState::update() {
 
     if (kDown & KEY_TOUCH) {
         hidTouchRead(&touch);
-
+        if (isTouchInRect(touch.px, touch.py, btn1X, btn1Y, btn1W, btnH)) {
+            //game.changeState(std::make_unique<OptionsState>(game));
+            game.changeState(std::make_unique<PlayState>(game));
+        }
         if (isTouchInRect(touch.px, touch.py, btn2X, btn2Y, btn2W, btnH)) {
-            game.changeState(std::make_unique<OptionsState>(game));
+            //game.changeState(std::make_unique<OptionsState>(game));
+            game.pushState(std::make_unique<OptionsState>(game));
         }
         if (isTouchInRect(touch.px, touch.py, btn3X, btn3Y, btn3W, btnH)) {
             return false;

@@ -1,6 +1,4 @@
 #include "../core/GameManager.hpp"
-#include "3ds/services/hid.h"
-#include "c2d/base.h"
 #include "OptionsState.hpp"
 #include "MainMenuState.hpp"
 
@@ -19,7 +17,8 @@ bool OptionsState::update() {
 	if (kDown & KEY_SELECT)
 		return false; // break in order to return to hbmenu
     if (kDown & KEY_B)
-        game.changeState(std::make_unique<MainMenuState>(game));
+        //game.changeState(std::make_unique<MainMenuState>(game));
+        game.popState();
 
 
     return true;

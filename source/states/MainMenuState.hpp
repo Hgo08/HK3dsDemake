@@ -2,7 +2,6 @@
 #include <citro2d.h>
 #include <3ds.h>
 #include "../core/State.hpp"
-#include "c2d/base.h"
 
 class MainMenuState : public State {
 private:

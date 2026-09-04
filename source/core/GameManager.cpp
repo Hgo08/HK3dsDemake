@@ -51,7 +51,7 @@ bool GameManager::update(){
 bool GameManager::render(){
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 
-	C2D_TargetClear(top,  C2D_Color32(0x68, 0xB0, 0xD8, 0xFF));
+	C2D_TargetClear(top,  0);
 	C2D_SceneBegin(top);
 	//render TOP
 
@@ -61,7 +61,7 @@ bool GameManager::render(){
         state->renderTop();
     }
 
-    C2D_TargetClear(bott, C2D_Color32(0x68, 0xB0, 0xD8, 0xFF));
+    C2D_TargetClear(bott, 0);
 	C2D_SceneBegin(bott);
     //render BOTT
 
