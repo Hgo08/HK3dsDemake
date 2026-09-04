@@ -41,10 +41,8 @@ void MainMenuView::update() {
         hidTouchRead(&touch);
 
         if (state.isTouchInRect(touch.px, touch.py, btn1X, btn1Y, btn1W, btnH)) {
-            //state.getGame().changeState(std::make_unique<PlayState>(state.getGame()));
         }
         else if (state.isTouchInRect(touch.px, touch.py, btn2X, btn2Y, btn2W, btnH)) {
-            // Apilar la vista de opciones sin destruir las fuentes ni texturas de MainMenuState
             menuManager.changeMenu(std::make_unique<OptionsMenu>(state, menuManager));
         }
         else if (state.isTouchInRect(touch.px, touch.py, btn3X, btn3Y, btn3W, btnH)) {
@@ -54,7 +52,6 @@ void MainMenuView::update() {
 }
 
 void MainMenuView::renderTop() {
-    // La pantalla superior puede mantenerse vacía o dibujar elementos específicos de esta vista
 }
 
 void MainMenuView::renderBott() {

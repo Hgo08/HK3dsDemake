@@ -26,47 +26,21 @@ MainMenuState::~MainMenuState() {
 }
 
 bool MainMenuState::init() {
-
+    //imgs
     title_texture_sheet = C2D_SpriteSheetLoad("romfs:/title-screen.t3x");
     menu_texture_sheet = C2D_SpriteSheetLoad("romfs:/menu-screen.t3x");
-
-    if (!title_texture_sheet || !menu_texture_sheet) {
-	    consoleInit(GFX_TOP, NULL);
-        printf("Error: Failed to load sprite sheets in MainMenu :(\n");
-        printf("Report this to the github repository\n");
-        printf("Press START to exit...");
-        while (aptMainLoop()) {
-            hidScanInput();
-            if (hidKeysDown() & KEY_START) break;
-            gfxFlushBuffers();
-            gfxSwapBuffers();
-            gspWaitForVBlank();
-        }
-
+    if (!title_texture_sheet || !menu_texture_sheet)
         return false;
-    }
-    
     title_banner = C2D_SpriteSheetGetImage(title_texture_sheet, 0);
     menu_banner = C2D_SpriteSheetGetImage(menu_texture_sheet, 0);
 
+    //text buff & font
     textBuff = C2D_TextBufNew(32);
 	font = C2D_FontLoad("romfs:/Trajan.bcfnt");
-
-    if (!font) {
-        consoleInit(GFX_TOP, NULL);
-        printf("Error: Failed to load font in MainMenu :(\n");
-        printf("Report this to the github repository\n");
-        printf("Press START to exit...");
-        while (aptMainLoop()) {
-            hidScanInput();
-            if (hidKeysDown() & KEY_START) break;
-            gfxFlushBuffers();
-            gfxSwapBuffers();
-            gspWaitForVBlank();
-        }
+    if (!font)
         return false;
-    }
 
+    //initialize first menu
     menuManager.changeMenu(std::make_unique<MainMenuView>(*this, menuManager));
 
     return true;
@@ -75,7 +49,6 @@ void MainMenuState::handleInput() {}
 bool MainMenuState::update() {
     menuManager.update();
 
-    // Si la pila de menús se queda vacía (por ejemplo, al dar a "Salir"), cerramos el estado
     if (menuManager.noMenu()) {
         return false;
     }
