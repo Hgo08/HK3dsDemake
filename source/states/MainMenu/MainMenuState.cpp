@@ -65,6 +65,9 @@ bool MainMenuState::update() {
         if (menuManager.haveBackButton())
             backButton.handleTouch(kDown, touch);
     }
+    if (kDown & KEY_B) {
+        menuManager.back();
+    }
 
     if (menuTitle != menuManager.getMenuTitle()){
         menuTitle = menuManager.getMenuTitle();

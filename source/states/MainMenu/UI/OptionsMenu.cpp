@@ -18,10 +18,7 @@ bool OptionsMenu::init() {
 }
 
 void OptionsMenu::update() {
-    u32 kDown = hidKeysDown();
-    if (kDown & KEY_B) {
-        menuManager.changeMenu(std::make_unique<MainMenuView>(state, menuManager));
-    }
+
 }
 
 void OptionsMenu::renderTop() {

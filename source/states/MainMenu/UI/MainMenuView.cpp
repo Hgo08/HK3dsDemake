@@ -44,8 +44,8 @@ void MainMenuView::update() {
 
         if (state.isTouchInRect(touch.px, touch.py, btn1X, btn1Y, btn1W, btnH)) {
             GameManager& game = state.getGame();
-            //menuManager.changeMenu(std::make_unique<SavesMenu>(state, menuManager));
-            game.changeState(std::make_unique<PlayState>(game));
+            menuManager.changeMenu(std::make_unique<SavesMenu>(state, menuManager));
+            //game.changeState(std::make_unique<PlayState>(game));
         }
         else if (state.isTouchInRect(touch.px, touch.py, btn2X, btn2Y, btn2W, btnH)) {
             menuManager.changeMenu(std::make_unique<OptionsMenu>(state, menuManager));
