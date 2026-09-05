@@ -4,7 +4,7 @@
 #include <3ds.h>
 #include <string>
 
-class TextButton : Button{
+class TextButton : public Button{
 private:
     C2D_Text textObj;
     float scale = 1.0f;

@@ -2,7 +2,6 @@
 #include "UI/MainMenuView.hpp"
 #include "../../core/GameManager.hpp"
 #include "../../core/TextButton.hpp"
-#include "c2d/base.h"
 #include <3ds.h>
 #include <memory>
 #include <string>
@@ -38,8 +37,8 @@ bool MainMenuState::init() {
     if (!font)
         return false;
 
-    backButton.init(font, staticBuff, "Back", 215.0f, 0.65f, [this](){menuManager.back();});
-
+    backButton.init(font, staticBuff, "Back", 120, 215, 0.65, 10, 10, [this](){menuManager.back();});
+    backButton.centerHorizontally();
     //initialize first menu
     menuManager.changeMenu(std::make_unique<MainMenuView>(*this, menuManager));
 

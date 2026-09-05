@@ -2,6 +2,7 @@
 #include <citro2d.h>
 #include <3ds.h>
 #include "../../../core/UIMenu.hpp"
+#include "../../../core/TextButton.hpp"
 
 class MainMenuState;
 class MenuManager;
@@ -10,6 +11,8 @@ class MainMenuView : public UIMenu {
 private:
     MainMenuState& state;
     MenuManager& menuManager;
+
+    TextButton buttons[3]; 
 
     C2D_Text textObj[3];
     C2D_TextBuf textBuff = nullptr;
