@@ -6,3 +6,4 @@ compile_commands.json
 .devcontainer/devcontainer.json
 .vscode/**
 a.cpp
+romfs/gfx/**

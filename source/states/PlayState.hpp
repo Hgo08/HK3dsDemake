@@ -4,7 +4,7 @@
 class PlayState : public State {
 public:
     explicit PlayState(GameManager& game);
-    ~PlayState() override = default;
+    ~PlayState() override;
 
     
     bool init() override;
