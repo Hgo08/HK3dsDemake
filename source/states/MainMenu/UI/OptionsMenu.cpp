@@ -29,7 +29,7 @@ void OptionsMenu::renderTop() {
 }
 
 void OptionsMenu::renderBott() {
-    C2D_DrawText(&textObj, C2D_WithColor, state.centerText(textObj.width), 10,  0.5f, 1, 1, colorWhite);
+    C2D_DrawText(&textObj, C2D_WithColor, state.centerText(textObj.width), 5,  0.5f, 1, 1, colorWhite);
 }
 
 void OptionsMenu::back() {

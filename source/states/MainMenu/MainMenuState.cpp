@@ -10,18 +10,11 @@ TextButton backButton;
 MainMenuState::MainMenuState(GameManager& game) : State(game) {}
 
 MainMenuState::~MainMenuState() {
-    if (menu_texture_sheet) {
-        C2D_SpriteSheetFree(menu_texture_sheet);
-    }
-    if (title_texture_sheet) {
-        C2D_SpriteSheetFree(title_texture_sheet);
-    }
-	if (textBuff) {
-        C2D_TextBufDelete(textBuff);
-    }
-    if (font) {
-        C2D_FontFree(font);
-    }
+    if (menu_texture_sheet) C2D_SpriteSheetFree(menu_texture_sheet);
+    if (title_texture_sheet) C2D_SpriteSheetFree(title_texture_sheet);
+	if (textBuff) C2D_TextBufDelete(textBuff);
+    if (font) C2D_FontFree(font);
+
 
 }
 
@@ -29,10 +22,12 @@ bool MainMenuState::init() {
     //imgs
     title_texture_sheet = C2D_SpriteSheetLoad("romfs:/title-screen.t3x");
     menu_texture_sheet = C2D_SpriteSheetLoad("romfs:/menu-screen.t3x");
-    if (!title_texture_sheet || !menu_texture_sheet) return false;
-
+    warning_fleur_sheet = C2D_SpriteSheetLoad("romfs:/gfx/Warning_Fleur.t3x");
+    if (!title_texture_sheet || !menu_texture_sheet || !warning_fleur_sheet) return false;
     title_banner = C2D_SpriteSheetGetImage(title_texture_sheet, 0);
     menu_banner = C2D_SpriteSheetGetImage(menu_texture_sheet, 0);
+    warning_fleur = C2D_SpriteSheetGetImage(warning_fleur_sheet, 0); //480x40
+
 
     //text buff & font (used glyphs rn: 4)
     textBuff = C2D_TextBufNew(8);
@@ -40,7 +35,7 @@ bool MainMenuState::init() {
     if (!font)
         return false;
 
-    backButton.init(font, textBuff, "Back", 210.0f, 0.65f, [this](){menuManager.back();});
+    backButton.init(font, textBuff, "Back", 215.0f, 0.65f, [this](){menuManager.back();});
 
     //initialize first menu
     menuManager.changeMenu(std::make_unique<MainMenuView>(*this, menuManager));
@@ -77,8 +72,11 @@ void MainMenuState::renderBott() {
         C2D_DrawImageAt(menu_banner, -96.0f, 0.0f, 0, NULL, 1.0f, 1.0f);
     }
 
-    if (menuManager.haveBackButton())
+    if (menuManager.haveBackButton()) {
+        C2D_DrawImageAt(warning_fleur, 40, 35, 0, NULL, 0.5f, 0.5f);
         backButton.render(true);
+    }
+
     menuManager.renderBott();
 }
 int MainMenuState::centerText(float textWidth, bool topScreen) {

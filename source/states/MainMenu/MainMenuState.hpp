@@ -18,8 +18,10 @@ public:
     
     C2D_SpriteSheet menu_texture_sheet = NULL;
     C2D_SpriteSheet title_texture_sheet = NULL;
+    C2D_SpriteSheet warning_fleur_sheet = NULL;
     C2D_Image menu_banner;
     C2D_Image title_banner;
+    C2D_Image warning_fleur;
 
     explicit MainMenuState(GameManager& game);
     ~MainMenuState() override;
