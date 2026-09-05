@@ -5,10 +5,8 @@
 #include "../../core/MenuManager.hpp"
 
 class MainMenuState : public State {
-private:
-    MenuManager menuManager;
-
 public:
+    MenuManager menuManager;
     u32 kDown;
     touchPosition touch;
 
@@ -30,7 +28,6 @@ public:
     ~MainMenuState() override;
     
     bool init() override;
-    void handleInput() override;
     bool update() override;
     void renderTop() override;
     void renderBott() override;

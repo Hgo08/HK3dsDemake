@@ -49,7 +49,6 @@ bool MainMenuState::init() {
 
     return true;
 }
-void MainMenuState::handleInput() {}
 bool MainMenuState::update() {
     if (menuManager.noMenu()) {
         return false;

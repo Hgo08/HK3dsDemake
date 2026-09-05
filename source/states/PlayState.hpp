@@ -8,7 +8,6 @@ public:
 
     
     bool init() override;
-    void handleInput() override;
     bool update() override;
     void renderTop() override;
     void renderBott() override;

@@ -1,4 +1,7 @@
 #include "../../../core/MenuManager.hpp"
+#include "../../../core/GameManager.hpp"
+#include "../../PlayState.hpp"
+#include "3ds/services/hid.h"
 #include "MainMenuView.hpp"
 #include "SavesMenu.hpp"
 #include "../MainMenuState.hpp"
@@ -7,7 +10,6 @@
 
 SavesMenu::SavesMenu(MainMenuState& state, MenuManager& menuManager)
     : state(state), menuManager(menuManager) {}
-
 
 bool SavesMenu::init(){
     //imgs
@@ -23,16 +25,17 @@ bool SavesMenu::init(){
     for (int i = 0; i < 4; i++) {
         C2D_TextFontParse(&saveNumberObj[i], state.font, staticBuff, (std::to_string(i+1) + ".").c_str());
         C2D_TextOptimize(&saveNumberObj[i]);
-        buttons[i].init(20, i*38+60, 210, 30);
+        buttons[i].init(20, i*38+60, 210, 30, [this](){state.getGame().changeState(std::make_unique<PlayState>(state.getGame()));;});
     }
     return true;
 }
 void SavesMenu::update(){
-    if (KEY_TOUCH & state.kDown) {
+    u32 kDown = hidKeysDown();
+    if (KEY_TOUCH & kDown) {
         touchPosition touch;
         hidTouchRead(&touch);
-        for (int i = 0; i < 3; i++) {
-            buttons[i].handleTouch(state.kDown, touch);
+        for (int i = 0; i < 4; i++) {
+            buttons[i].handleTouch(kDown, touch);
         }
     }
 }
