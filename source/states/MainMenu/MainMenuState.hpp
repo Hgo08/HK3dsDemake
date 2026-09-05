@@ -13,8 +13,9 @@ public:
     touchPosition touch;
 
     C2D_Font font = nullptr;
-    C2D_TextBuf textBuff = nullptr;
-    C2D_Text textObj[3];
+    C2D_TextBuf staticBuff = nullptr;
+    C2D_TextBuf menuTitleBuff = nullptr;
+    C2D_Text menuTitleObj;
     
     C2D_SpriteSheet menu_texture_sheet = NULL;
     C2D_SpriteSheet title_texture_sheet = NULL;
@@ -22,6 +23,8 @@ public:
     C2D_Image menu_banner;
     C2D_Image title_banner;
     C2D_Image warning_fleur;
+
+    std::string menuTitle;
 
     explicit MainMenuState(GameManager& game);
     ~MainMenuState() override;

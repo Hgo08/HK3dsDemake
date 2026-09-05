@@ -2,8 +2,10 @@
 #include "UI/MainMenuView.hpp"
 #include "../../core/GameManager.hpp"
 #include "../../core/TextButton.hpp"
+#include "c2d/base.h"
 #include <3ds.h>
 #include <memory>
+#include <string>
 
 TextButton backButton;
 
@@ -12,7 +14,8 @@ MainMenuState::MainMenuState(GameManager& game) : State(game) {}
 MainMenuState::~MainMenuState() {
     if (menu_texture_sheet) C2D_SpriteSheetFree(menu_texture_sheet);
     if (title_texture_sheet) C2D_SpriteSheetFree(title_texture_sheet);
-	if (textBuff) C2D_TextBufDelete(textBuff);
+	if (staticBuff) C2D_TextBufDelete(staticBuff);
+	if (menuTitleBuff) C2D_TextBufDelete(menuTitleBuff);
     if (font) C2D_FontFree(font);
 
 
@@ -29,16 +32,21 @@ bool MainMenuState::init() {
     warning_fleur = C2D_SpriteSheetGetImage(warning_fleur_sheet, 0); //480x40
 
 
-    //text buff & font (used glyphs rn: 4)
-    textBuff = C2D_TextBufNew(8);
+    //text buff & font
+    staticBuff = C2D_TextBufNew(16);
 	font = C2D_FontLoad("romfs:/Trajan.bcfnt");
     if (!font)
         return false;
 
-    backButton.init(font, textBuff, "Back", 215.0f, 0.65f, [this](){menuManager.back();});
+    backButton.init(font, staticBuff, "Back", 215.0f, 0.65f, [this](){menuManager.back();});
 
     //initialize first menu
     menuManager.changeMenu(std::make_unique<MainMenuView>(*this, menuManager));
+
+    menuTitle = menuManager.getMenuTitle();
+    menuTitleBuff = C2D_TextBufNew(64);
+    C2D_TextFontParse(&menuTitleObj, font, menuTitleBuff, menuTitle.c_str());
+    C2D_TextOptimize(&menuTitleObj);
 
     return true;
 }
@@ -58,6 +66,13 @@ bool MainMenuState::update() {
             backButton.handleTouch(kDown, touch);
     }
 
+    if (menuTitle != menuManager.getMenuTitle()){
+        menuTitle = menuManager.getMenuTitle();
+        menuTitleBuff = C2D_TextBufNew(64);
+        C2D_TextFontParse(&menuTitleObj, font, menuTitleBuff, menuTitle.c_str());
+        C2D_TextOptimize(&menuTitleObj);
+    }
+
 
     return true;
 }
@@ -71,9 +86,11 @@ void MainMenuState::renderBott() {
     if (menu_texture_sheet) {
         C2D_DrawImageAt(menu_banner, -96.0f, 0.0f, 0, NULL, 1.0f, 1.0f);
     }
-
-    if (menuManager.haveBackButton()) {
+    if (menuTitle != "") {
+        C2D_DrawText(&menuTitleObj, C2D_WithColor, centerText(menuTitleObj.width), 5,  0.5f, 1, 1, C2D_Color32(255, 255, 255, 255));
         C2D_DrawImageAt(warning_fleur, 40, 35, 0, NULL, 0.5f, 0.5f);
+    }
+    if (menuManager.haveBackButton()) {
         backButton.render(true);
     }
 

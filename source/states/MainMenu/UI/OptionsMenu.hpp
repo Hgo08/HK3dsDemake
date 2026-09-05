@@ -1,6 +1,7 @@
 #pragma once
 #include <citro2d.h>
 #include <3ds.h>
+#include <string>
 #include "../../../core/UIMenu.hpp"
 
 class MainMenuState;
@@ -16,6 +17,8 @@ private:
 public:
     OptionsMenu(MainMenuState& state, MenuManager& menuManager);
     ~OptionsMenu() override = default;
+
+    std::string getTitle() const override { return "Options"; }
 
     bool init() override;
     void update() override;
