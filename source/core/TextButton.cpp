@@ -10,9 +10,8 @@ void TextButton::init(C2D_Font font, C2D_TextBuf textBuf, const std::string& lab
     C2D_TextOptimize(&textObj);
 
     updateDimensions();
-    
+    x = xPos - (paddingX * scale * 0.5f);
     y = yPos - (paddingY * scale * 0.5f);
-    centerHorizontally(320.0f);
 }
 
 void TextButton::updateDimensions() {

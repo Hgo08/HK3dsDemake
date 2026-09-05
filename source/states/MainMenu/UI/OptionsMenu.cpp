@@ -19,6 +19,10 @@ bool OptionsMenu::init() {
     exampleButtons[4].init(state.font, textBuff, "Mods",         0, 4*25+58, 0.6);
     exampleButtons[5].init(state.font, textBuff, "",             0, 5*25+58, 0.6);
 
+    for (int i = 0; i < 6; i++) {
+        exampleButtons[i].centerHorizontally();
+    }
+
     return true;
 }
 
@@ -32,7 +36,7 @@ void OptionsMenu::renderTop() {
 
 void OptionsMenu::renderBott() {
     for (int i = 0; i < 6; i++) {
-        exampleButtons[i].render();
+        exampleButtons[i].render(true);
     }
 }
 
