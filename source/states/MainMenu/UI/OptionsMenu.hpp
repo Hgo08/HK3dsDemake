@@ -3,6 +3,8 @@
 #include <3ds.h>
 #include <string>
 #include "../../../core/UIMenu.hpp"
+#include "../../../core/TextButton.hpp"
+#include "c2d/text.h"
 
 class MainMenuState;
 class MenuManager;
@@ -12,7 +14,8 @@ private:
     MainMenuState& state;
     MenuManager& menuManager;
 
-    C2D_Text textObj;
+    C2D_TextBuf textBuff;
+    TextButton exampleButtons[6];
 
 public:
     OptionsMenu(MainMenuState& state, MenuManager& menuManager);
