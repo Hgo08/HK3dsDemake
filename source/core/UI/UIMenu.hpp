@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 #include <string>
 #include <vector>
 #include <memory>
@@ -27,7 +28,7 @@ public:
             touchPosition touch;
             hidTouchRead(&touch);
 
-            for (int i = 0; i < buttons.size(); i++) {
+            for (size_t i = 0; i < buttons.size(); i++) {
                 if (buttons[i]->handleTouch(kDown, touch)) {
                     selectedButtonIndex = i;
                     break;
