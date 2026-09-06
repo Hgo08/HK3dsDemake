@@ -1,7 +1,7 @@
 #include "MainMenuState.hpp"
 #include "UI/MainMenuView.hpp"
 #include "../../core/GameManager.hpp"
-#include "../../core/TextButton.hpp"
+#include "../../core/UI/TextButton.hpp"
 #include <3ds.h>
 #include <memory>
 #include <string>

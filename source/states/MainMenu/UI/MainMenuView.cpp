@@ -5,7 +5,7 @@
 #include "../MainMenuState.hpp"
 #include "../../PlayState.hpp"
 #include "../../../core/GameManager.hpp"
-#include "../../../core/MenuManager.hpp"
+#include "../../../core/UI/MenuManager.hpp"
 #include <memory>
 
 const u32 colorWhite = C2D_Color32(255, 255, 255, 255);

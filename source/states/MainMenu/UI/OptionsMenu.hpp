@@ -2,8 +2,8 @@
 #include <citro2d.h>
 #include <3ds.h>
 #include <string>
-#include "../../../core/UIMenu.hpp"
-#include "../../../core/TextButton.hpp"
+#include "../../../core/UI/UIMenu.hpp"
+#include "../../../core/UI/TextButton.hpp"
 #include "c2d/text.h"
 
 class MainMenuState;

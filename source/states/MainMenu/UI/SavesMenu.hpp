@@ -1,8 +1,8 @@
 #pragma once
 #include <citro2d.h>
 #include <3ds.h>
-#include "../../../core/UIMenu.hpp"
-#include "../../../core/Button.hpp"
+#include "../../../core/UI/UIMenu.hpp"
+#include "../../../core/UI/Button.hpp"
 
 class MainMenuState;
 class MenuManager;

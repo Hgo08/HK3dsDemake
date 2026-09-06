@@ -2,7 +2,7 @@
 #include <citro2d.h>
 #include <3ds.h>
 #include "../../core/State.hpp"
-#include "../../core/MenuManager.hpp"
+#include "../../core/UI/MenuManager.hpp"
 
 class MainMenuState : public State {
 public:
