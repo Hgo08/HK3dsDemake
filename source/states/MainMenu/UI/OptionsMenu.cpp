@@ -18,6 +18,13 @@ bool OptionsMenu::init() {
         btn->init(state.font, textBuff, "Start Game", -1, i*25+58, 0.6);
         buttons.push_back(std::move(btn));
     }
+    
+    auto btnBack = std::make_unique<TextButton>();
+    btnBack->init(state.font, textBuff, "Back", -1, 215, 0.65, 10, 10, [this]() {
+        back();
+    });
+    buttons.push_back(std::move(btnBack));
+
 
     return true;
 }

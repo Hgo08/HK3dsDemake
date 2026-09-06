@@ -14,8 +14,6 @@ private:
 
     C2D_TextBuf staticBuff;
     C2D_Text saveNumberObj[4];
-    Button buttons[4];
-
 
     //long ahh names
     C2D_SpriteSheet profileFleurSpriteSheet;

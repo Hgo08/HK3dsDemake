@@ -6,7 +6,7 @@
 #include <memory>
 #include <string>
 
-TextButton backButton;
+std::unique_ptr<TextButton> backButton;
 
 MainMenuState::MainMenuState(GameManager& game) : State(game) {}
 
@@ -40,8 +40,8 @@ bool MainMenuState::init() {
     if (!font)
         return false;
 
-    backButton.init(font, staticBuff, "Back", 120, 215, 0.65, 10, 10, [this](){menuManager.back();});
-    backButton.centerHorizontally();
+    backButton = std::make_unique<TextButton>();
+    backButton->init(font, staticBuff, "Back", -1, 215, 0.65, 10, 10, [this](){menuManager.back();});
     //initialize first menu
     menuManager.changeMenu(std::make_unique<MainMenuView>(*this, menuManager));
 
@@ -64,7 +64,7 @@ bool MainMenuState::update() {
         touchPosition touch;
         hidTouchRead(&touch);
         if (menuManager.haveBackButton())
-            backButton.handleTouch(kDown, touch);
+            backButton->handleTouch(kDown, touch);
     }
     if (kDown & KEY_B) {
         menuManager.back();
@@ -95,7 +95,7 @@ void MainMenuState::renderBott() {
         C2D_DrawImageAt(warning_fleur, 40, 35, 0, NULL, 0.5f, 0.5f);
     }
     if (menuManager.haveBackButton()) {
-        backButton.render(true);
+        backButton->render(true);
     }
 
     menuManager.renderBott();

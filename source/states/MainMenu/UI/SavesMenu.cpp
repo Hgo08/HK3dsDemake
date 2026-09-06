@@ -6,6 +6,7 @@
 #include "SavesMenu.hpp"
 #include "../MainMenuState.hpp"
 #include "c2d/spritesheet.h"
+#include <cstddef>
 #include <string>
 
 SavesMenu::SavesMenu(MainMenuState& state, MenuManager& menuManager)
@@ -22,22 +23,25 @@ bool SavesMenu::init(){
     //text
     staticBuff = C2D_TextBufNew(16);
 
+    //save numbers and buttons
     for (int i = 0; i < 4; i++) {
         C2D_TextFontParse(&saveNumberObj[i], state.font, staticBuff, (std::to_string(i+1) + ".").c_str());
         C2D_TextOptimize(&saveNumberObj[i]);
-        buttons[i].init(20, i*38+60, 210, 30, [this](){state.getGame().changeState(std::make_unique<PlayState>(state.getGame()));;});
+        auto saveBttn= std::make_unique<Button>();
+        saveBttn->init(20, i*38+60, 210, 30, [this](){state.getGame().changeState(std::make_unique<PlayState>(state.getGame()));;});
+        buttons.push_back(std::move(saveBttn));
     }
+ 
+    //back btn
+    auto btnBack = std::make_unique<TextButton>();
+    btnBack->init(state.font, staticBuff, "Back", -1, 215, 0.65, 10, 10, [this]() {
+        back();
+    });
+    buttons.push_back(std::move(btnBack));
     return true;
 }
 void SavesMenu::update(){
-    u32 kDown = hidKeysDown();
-    if (KEY_TOUCH & kDown) {
-        touchPosition touch;
-        hidTouchRead(&touch);
-        for (int i = 0; i < 4; i++) {
-            buttons[i].handleTouch(kDown, touch);
-        }
-    }
+    UIMenu::update();
 }
 void SavesMenu::renderTop(){
 
@@ -47,7 +51,15 @@ void SavesMenu::renderBott(){
         C2D_DrawImageAt(profileFleurImg, 20,  i*38+60, 0.5, nullptr, 1, 1);
         C2D_DrawImageAt(godhomeAreaImg, 33,  i*38+62, 0.5, nullptr, 1, 1);
         C2D_DrawText(&saveNumberObj[i], C2D_WithColor, 33, i*38+70,   0.5f, 0.6, 0.6, C2D_Color32(255, 255, 255, 255));
-        buttons[i].render(false, true);
+    }
+    for (size_t i = 0; i < buttons.size(); ++i) {
+        bool isSelected = (static_cast<int>(i) == selectedButtonIndex);
+
+        buttons[i]->render(isSelected, true);
+
+        if (isSelected) {
+            drawSelectionDecorators(*buttons[i], state.selected_text_decorator, 3, 0.6);
+        }
     }
 }
 void SavesMenu::back(){

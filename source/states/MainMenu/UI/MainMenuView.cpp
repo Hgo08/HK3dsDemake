@@ -21,18 +21,20 @@ bool MainMenuView::init() {
     btnStart->init(state.font, textBuff, "Start Game", -1, 50, 1, 10, 10, [this]() {
         menuManager.changeMenu(std::make_unique<SavesMenu>(state, menuManager));
     });
+    buttons.push_back(std::move(btnStart));
+
     auto btnOptions = std::make_unique<TextButton>();
     btnOptions->init(state.font, textBuff, "Options", -1, 105, 1, 10, 10, [this]() {
         menuManager.changeMenu(std::make_unique<OptionsMenu>(state, menuManager));
     });
+    buttons.push_back(std::move(btnOptions));
+
     auto btnExit = std::make_unique<TextButton>();
     btnExit->init(state.font, textBuff, "Exit Game", -1, 160, 1, 10, 10, [this]() {
         menuManager.clear();
     });
-
-    buttons.push_back(std::move(btnStart));
-    buttons.push_back(std::move(btnOptions));
     buttons.push_back(std::move(btnExit));
+
 
     return true;
 }
