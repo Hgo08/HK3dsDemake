@@ -20,6 +20,5 @@ public:
     bool noMenu();
     void clear();
     void back();
-    bool haveBackButton();
     std::string getMenuTitle();
 };

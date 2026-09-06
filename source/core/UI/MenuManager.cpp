@@ -53,13 +53,6 @@ void MenuManager::back() {
     }
 }
 
-bool MenuManager::haveBackButton() {
-    if (activeMenu) {
-        return activeMenu->haveBackButton();
-    }
-    return false;
-}
-
 std::string MenuManager::getMenuTitle() {
     if (activeMenu) {
         return activeMenu->getTitle();

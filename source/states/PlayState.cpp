@@ -24,7 +24,7 @@ bool PlayState::update() {
 
     if (kDown & KEY_B){
 		std::unique_ptr<MainMenuState> state = std::make_unique<MainMenuState>(game);
-		//idk if i could make it go to the saveMenu instead of the "ManiMenuView" menu
+		//idk if i could make it go to the "SavesMenu" instead of the "ManiMenuView" menu
         game.changeState(std::move(state));
 	}
 

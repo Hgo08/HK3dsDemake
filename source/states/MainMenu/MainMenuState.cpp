@@ -40,8 +40,6 @@ bool MainMenuState::init() {
     if (!font)
         return false;
 
-    backButton = std::make_unique<TextButton>();
-    backButton->init(font, staticBuff, "Back", -1, 215, 0.65, 10, 10, [this](){menuManager.back();});
     //initialize first menu
     menuManager.changeMenu(std::make_unique<MainMenuView>(*this, menuManager));
 
@@ -60,12 +58,7 @@ bool MainMenuState::update() {
     menuManager.update();
 
     u32 kDown = hidKeysDown();
-    if (kDown & KEY_TOUCH) {
-        touchPosition touch;
-        hidTouchRead(&touch);
-        if (menuManager.haveBackButton())
-            backButton->handleTouch(kDown, touch);
-    }
+
     if (kDown & KEY_B) {
         menuManager.back();
     }
@@ -76,7 +69,6 @@ bool MainMenuState::update() {
         C2D_TextFontParse(&menuTitleObj, font, menuTitleBuff, menuTitle.c_str());
         C2D_TextOptimize(&menuTitleObj);
     }
-
 
     return true;
 }
@@ -93,9 +85,6 @@ void MainMenuState::renderBott() {
     if (menuTitle != "") {
         C2D_DrawText(&menuTitleObj, C2D_WithColor, centerText(menuTitleObj.width), 5,  0.5f, 1, 1, C2D_Color32(255, 255, 255, 255));
         C2D_DrawImageAt(warning_fleur, 40, 35, 0, NULL, 0.5f, 0.5f);
-    }
-    if (menuManager.haveBackButton()) {
-        backButton->render(true);
     }
 
     menuManager.renderBott();

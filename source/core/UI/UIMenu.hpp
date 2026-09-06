@@ -14,8 +14,7 @@ protected:
     int selectedButtonIndex = 0;
 public:
     virtual ~UIMenu() = default;
-    virtual bool haveBackButton() const { return true; };
-
+    
     virtual std::string getTitle() const { return ""; };
 
     virtual bool init() = 0;
