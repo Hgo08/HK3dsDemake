@@ -52,7 +52,7 @@ void MainMenuView::renderBott() {
     for (size_t i = 0; i < buttons.size(); ++i) {
         bool isSelected = (static_cast<int>(i) == selectedButtonIndex);
 
-        buttons[i]->render(isSelected, true);
+        buttons[i]->render(isSelected);
 
         if (isSelected) {
             drawSelectionDecorators(*buttons[i], state.selected_text_decorator, 3);

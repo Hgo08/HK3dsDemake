@@ -17,8 +17,6 @@ MainMenuState::~MainMenuState() {
 	if (staticBuff) C2D_TextBufDelete(staticBuff);
 	if (menuTitleBuff) C2D_TextBufDelete(menuTitleBuff);
     if (font) C2D_FontFree(font);
-
-
 }
 
 bool MainMenuState::init() {
