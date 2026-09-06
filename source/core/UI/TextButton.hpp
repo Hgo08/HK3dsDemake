@@ -19,5 +19,5 @@ public:
     void init(C2D_Font font, C2D_TextBuf textBuf, const std::string& label, float xPos, float yPos, float textScale = 1, float paddingX = 10, float paddingY = 10, std::function<void()> callback = nullptr);
 
     void setPadding(float padX, float padY);
-    void render(bool drawDebugHitbox = false, int thickness = 1, float depth = 0.5f) const override;
+    void render(bool isSelected, bool drawDebugHitbox = false, int thickness = 1, float depth = 0.5f) const override;
 };

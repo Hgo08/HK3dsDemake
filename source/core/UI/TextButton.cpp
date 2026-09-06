@@ -1,5 +1,6 @@
 #include "TextButton.hpp"
 
+// if x is negative, the text auto centers
 void TextButton::init(C2D_Font font, C2D_TextBuf textBuf, const std::string& label, float xPos, float yPos, float textScale, float paddingX, float paddingY, std::function<void()> callback) {
     scale = textScale;
     _paddingX = paddingX;
@@ -10,7 +11,12 @@ void TextButton::init(C2D_Font font, C2D_TextBuf textBuf, const std::string& lab
     C2D_TextOptimize(&textObj);
 
     updateDimensions();
-    x = xPos - (paddingX * scale * 0.5f);
+    
+    if (xPos < 0)
+        centerHorizontally();
+    else
+        x = xPos - (paddingX * scale * 0.5f);
+
     y = yPos - (paddingY * scale * 0.5f);
 }
 
@@ -25,11 +31,14 @@ void TextButton::setPadding(float padX, float padY) {
     updateDimensions();
 }
 
-void TextButton::render(bool drawDebugHitbox, int thickness, float depth) const {
+void TextButton::render(bool isSelected, bool drawDebugHitbox, int thickness, float depth) const {
     float textX = x + (_paddingX * scale * 0.5f);
     float textY = y + (_paddingY * scale * 0.5f);
 
-    C2D_DrawText(&textObj, C2D_WithColor, textX, textY, depth, scale, scale, textColor);
+    u32 activeColor = isSelected ? C2D_Color32(255, 255, 255, 100) : textColor;
 
-    Button::render(drawDebugHitbox, thickness, depth);
+    C2D_DrawText(&textObj, C2D_WithColor, textX, textY, depth, scale, scale, activeColor);
+
+    Button::render(isSelected, drawDebugHitbox, thickness, depth);
+
 }

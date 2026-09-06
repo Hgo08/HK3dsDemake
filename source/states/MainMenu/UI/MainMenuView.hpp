@@ -12,17 +12,10 @@ private:
     MainMenuState& state;
     MenuManager& menuManager;
 
-    TextButton buttons[3]; 
-
-    C2D_Text textObj[3];
     C2D_TextBuf textBuff = nullptr;
 
     float btn1W = 0, btn2W = 0, btn3W = 0;
     float btn1X = 0, btn2X = 0, btn3X = 0;
-    const float btnH = 45.0f;
-    const float btn1Y = 40.0f;
-    const float btn2Y = 95.0f;
-    const float btn3Y = 150.0f;
 
 public:
     MainMenuView(MainMenuState& state, MenuManager& menuManager);

@@ -8,7 +8,6 @@ protected:
     GameManager& game;
 public:
     explicit State(GameManager& game) : game(game) {}
-    //virtual so we can override
     virtual ~State() = default;
     virtual bool init() = 0;
     virtual bool update() = 0;

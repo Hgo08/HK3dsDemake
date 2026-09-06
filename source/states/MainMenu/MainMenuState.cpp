@@ -13,6 +13,7 @@ MainMenuState::MainMenuState(GameManager& game) : State(game) {}
 MainMenuState::~MainMenuState() {
     if (menu_texture_sheet) C2D_SpriteSheetFree(menu_texture_sheet);
     if (title_texture_sheet) C2D_SpriteSheetFree(title_texture_sheet);
+    if (selected_text_decorator_sheet) C2D_SpriteSheetFree(selected_text_decorator_sheet);
 	if (staticBuff) C2D_TextBufDelete(staticBuff);
 	if (menuTitleBuff) C2D_TextBufDelete(menuTitleBuff);
     if (font) C2D_FontFree(font);
@@ -25,10 +26,12 @@ bool MainMenuState::init() {
     title_texture_sheet = C2D_SpriteSheetLoad("romfs:/title-screen.t3x");
     menu_texture_sheet = C2D_SpriteSheetLoad("romfs:/menu-screen.t3x");
     warning_fleur_sheet = C2D_SpriteSheetLoad("romfs:/gfx/Warning_Fleur.t3x");
+    selected_text_decorator_sheet = C2D_SpriteSheetLoad("romfs:/gfx/main_menu_pointer.t3x");
     if (!title_texture_sheet || !menu_texture_sheet || !warning_fleur_sheet) return false;
     title_banner = C2D_SpriteSheetGetImage(title_texture_sheet, 0);
     menu_banner = C2D_SpriteSheetGetImage(menu_texture_sheet, 0);
     warning_fleur = C2D_SpriteSheetGetImage(warning_fleur_sheet, 0); //480x40
+    selected_text_decorator = C2D_SpriteSheetGetImage(selected_text_decorator_sheet, 0);
 
 
     //text buff & font

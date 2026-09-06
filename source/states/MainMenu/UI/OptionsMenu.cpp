@@ -1,7 +1,8 @@
 #include "OptionsMenu.hpp"
 #include "../MainMenuState.hpp"
-#include "../../../core/MenuManager.hpp"
+#include "../../../core/UI/MenuManager.hpp"
 #include "MainMenuView.hpp"
+#include <cstddef>
 #include <memory>
 
 const u32 colorWhite = C2D_Color32(255, 255, 255, 255);
@@ -12,22 +13,17 @@ OptionsMenu::OptionsMenu(MainMenuState& state, MenuManager& menuManager)
 bool OptionsMenu::init() {
     textBuff = C2D_TextBufNew(256);
 
-    exampleButtons[0].init(state.font, textBuff, "Game Options", 0, 0*25+58, 0.6);
-    exampleButtons[1].init(state.font, textBuff, "Audio",        0, 1*25+58, 0.6);
-    exampleButtons[2].init(state.font, textBuff, "Video",        0, 2*25+58, 0.6);
-    exampleButtons[3].init(state.font, textBuff, "Keybinds",     0, 3*25+58, 0.6);
-    exampleButtons[4].init(state.font, textBuff, "Mods",         0, 4*25+58, 0.6);
-    exampleButtons[5].init(state.font, textBuff, "",             0, 5*25+58, 0.6);
-
     for (int i = 0; i < 6; i++) {
-        exampleButtons[i].centerHorizontally();
+        auto btn = std::make_unique<TextButton>();
+        btn->init(state.font, textBuff, "Start Game", -1, i*25+58, 0.6);
+        buttons.push_back(std::move(btn));
     }
 
     return true;
 }
 
 void OptionsMenu::update() {
-
+    UIMenu::update();
 }
 
 void OptionsMenu::renderTop() {
@@ -35,8 +31,14 @@ void OptionsMenu::renderTop() {
 }
 
 void OptionsMenu::renderBott() {
-    for (int i = 0; i < 6; i++) {
-        exampleButtons[i].render(true);
+    for (size_t i = 0; i < buttons.size(); ++i) {
+        bool isSelected = (static_cast<int>(i) == selectedButtonIndex);
+
+        buttons[i]->render(isSelected, true);
+
+        if (isSelected) {
+            drawSelectionDecorators(*buttons[i], state.selected_text_decorator, 3);
+        }
     }
 }
 

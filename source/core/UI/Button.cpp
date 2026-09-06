@@ -35,11 +35,12 @@ bool Button::handleTouch(u32 kDown, const touchPosition& touch) {
     return false;
 }
 
-void Button::render(bool drawDebugHitbox, int thickness, float depth) const {
+void Button::render(bool isSelected, bool drawDebugHitbox, int thickness, float depth) const {
     if (drawDebugHitbox) {
-        C2D_DrawLine(x,         y,          outlineColor, x + width, y,          outlineColor, thickness, depth);
-        C2D_DrawLine(x + width, y,          outlineColor, x + width, y + height, outlineColor, thickness, depth);
-        C2D_DrawLine(x + width, y + height, outlineColor, x,         y + height, outlineColor, thickness, depth);
-        C2D_DrawLine(x,         y + height, outlineColor, x,         y,          outlineColor, thickness, depth);
+        u32 color = isSelected ? C2D_Color32(0, 255, 0, 255) : outlineColor;
+        C2D_DrawLine(x,         y,          color, x + width, y,          color, thickness, depth);
+        C2D_DrawLine(x + width, y,          color, x + width, y + height, color, thickness, depth);
+        C2D_DrawLine(x + width, y + height, color, x,         y + height, color, thickness, depth);
+        C2D_DrawLine(x,         y + height, color, x,         y,          color, thickness, depth);
     }
 }

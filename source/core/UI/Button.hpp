@@ -16,17 +16,40 @@ public:
     Button() = default;
     virtual ~Button() = default;
 
+    bool isSelected;
+
     void init(float posX, float posY, float w, float h, std::function<void()> callback = nullptr);
 
     void setPosition(float newX, float newY);
     void setSize(float newW, float newH);
     void centerHorizontally(float screenWidth = 320.0f);
+    void click() const { if (onClick) onClick(); }
 
     bool handleTouch(u32 kDown, const touchPosition& touch);
-    virtual void render(bool drawDebugHitbox = false, int thickness = 1, float depth = 0.5f) const;
+    virtual void render(bool isSelected, bool drawDebugHitbox = false, int thickness = 1, float depth = 0.5f) const;
 
     float getRectX() const { return x; }
     float getRectY() const { return y; }
     float getRectWidth() const { return width; }
     float getRectHeight() const { return height; }
 };
+
+// global auxiliar function to draw buttons left and right decorators
+inline void drawSelectionDecorators(const Button& btn, C2D_Image pointerImg, float padding = 10.0f, float depth = 0.5f) {
+    float btnX = btn.getRectX();
+    float btnY = btn.getRectY();
+    float btnW = btn.getRectWidth();
+    float btnH = btn.getRectHeight();
+
+    float imgW = pointerImg.subtex->width;
+    float imgH = pointerImg.subtex->height;
+
+    float imgY = btnY + (btnH - imgH) * 0.5f;
+
+    float leftX = btnX - imgW - padding;
+    float rightX = btnX + btnW + padding;
+
+    C2D_DrawImageAt(pointerImg, leftX,  imgY, depth, nullptr,  1.0f, 1.0f);
+    C2D_DrawImageAt(pointerImg, rightX, imgY, depth, nullptr, -1.0f, 1.0f);
+}
+

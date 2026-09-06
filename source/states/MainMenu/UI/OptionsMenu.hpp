@@ -15,8 +15,6 @@ private:
     MenuManager& menuManager;
 
     C2D_TextBuf textBuff;
-    TextButton exampleButtons[6];
-
 public:
     OptionsMenu(MainMenuState& state, MenuManager& menuManager);
     ~OptionsMenu() override = default;

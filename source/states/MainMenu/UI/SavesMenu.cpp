@@ -47,7 +47,7 @@ void SavesMenu::renderBott(){
         C2D_DrawImageAt(profileFleurImg, 20,  i*38+60, 0.5, nullptr, 1, 1);
         C2D_DrawImageAt(godhomeAreaImg, 33,  i*38+62, 0.5, nullptr, 1, 1);
         C2D_DrawText(&saveNumberObj[i], C2D_WithColor, 33, i*38+70,   0.5f, 0.6, 0.6, C2D_Color32(255, 255, 255, 255));
-        buttons[i].render(true);
+        buttons[i].render(false, true);
     }
 }
 void SavesMenu::back(){

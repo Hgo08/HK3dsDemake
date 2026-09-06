@@ -18,9 +18,11 @@ public:
     C2D_SpriteSheet menu_texture_sheet = NULL;
     C2D_SpriteSheet title_texture_sheet = NULL;
     C2D_SpriteSheet warning_fleur_sheet = NULL;
+    C2D_SpriteSheet selected_text_decorator_sheet = NULL;
     C2D_Image menu_banner;
     C2D_Image title_banner;
     C2D_Image warning_fleur;
+    C2D_Image selected_text_decorator;
 
     std::string menuTitle;
 
