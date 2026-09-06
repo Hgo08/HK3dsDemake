@@ -37,7 +37,7 @@ void OptionsMenu::renderBott() {
         buttons[i]->render(isSelected, true);
 
         if (isSelected) {
-            drawSelectionDecorators(*buttons[i], state.selected_text_decorator, 3);
+            drawSelectionDecorators(*buttons[i], state.selected_text_decorator, 3, 0.6);
         }
     }
 }

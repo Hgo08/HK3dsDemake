@@ -35,21 +35,21 @@ public:
 };
 
 // global auxiliar function to draw buttons left and right decorators
-inline void drawSelectionDecorators(const Button& btn, C2D_Image pointerImg, float padding = 10.0f, float depth = 0.5f) {
+inline void drawSelectionDecorators(const Button& btn, C2D_Image pointerImg, float padding = 10.0f, float scale = 1, float depth = 0.5f) {
     float btnX = btn.getRectX();
     float btnY = btn.getRectY();
     float btnW = btn.getRectWidth();
     float btnH = btn.getRectHeight();
 
-    float imgW = pointerImg.subtex->width;
-    float imgH = pointerImg.subtex->height;
+    float scaledW = pointerImg.subtex->width * scale;
+    float scaledH = pointerImg.subtex->height * scale;
 
-    float imgY = btnY + (btnH - imgH) * 0.5f;
+    float imgY = btnY + (btnH - scaledH) * 0.5f;
 
-    float leftX = btnX - imgW - padding;
+    float leftX = btnX - scaledW - padding;
     float rightX = btnX + btnW + padding;
 
-    C2D_DrawImageAt(pointerImg, leftX,  imgY, depth, nullptr,  1.0f, 1.0f);
-    C2D_DrawImageAt(pointerImg, rightX, imgY, depth, nullptr, -1.0f, 1.0f);
+    C2D_DrawImageAt(pointerImg, leftX,  imgY, depth, nullptr,  scale, scale);
+    C2D_DrawImageAt(pointerImg, rightX, imgY, depth, nullptr, -scale, scale);
 }
 
