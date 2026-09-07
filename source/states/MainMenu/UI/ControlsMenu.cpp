@@ -72,7 +72,7 @@ void ControlsMenu::renderBott() {
     for (size_t i = 0; i < buttons.size(); ++i) {
         bool isSelected = (static_cast<int>(i) == selectedButtonIndex);
 
-        buttons[i]->render(isSelected, true);
+        buttons[i]->render(isSelected);
 
         if (isSelected) {
             drawSelectionDecorators(*buttons[i], state.selected_text_decorator, 3, 0.6);
@@ -81,8 +81,6 @@ void ControlsMenu::renderBott() {
     for (int i = 0; i < 6; i++) {
         C2D_DrawText(&texts[i], C2D_WithColor, 20, i*22+52.5,  0.5f, 0.6, 0.6, C2D_Color32(255, 255, 255, 255));
         C2D_DrawText(&texts[i+6], C2D_WithColor, 180, i*22+52.5,  0.5f, 0.6, 0.6, C2D_Color32(255, 255, 255, 255));
-    }
-    for (int i = 0; i < 6; i++) {
         C2D_DrawImageAt(images[i], 120, i*22+52.5, 0, NULL, 0.5, 0.5);
         C2D_DrawImageAt(images[i+6], 280, i*22+52.5, 0, NULL, 0.5, 0.5);
     }
