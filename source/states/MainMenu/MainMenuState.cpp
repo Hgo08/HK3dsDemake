@@ -2,6 +2,7 @@
 #include "UI/MainMenuView.hpp"
 #include "../../core/GameManager.hpp"
 #include "../../core/UI/TextButton.hpp"
+#include "../../core/KeybindsManager.hpp"
 #include <3ds.h>
 #include <memory>
 #include <string>
@@ -53,19 +54,23 @@ bool MainMenuState::update() {
         return false;
     }
 
+    KeybindsManager& input = KeybindsManager::getInstance();
+    bool wasListening = input.getIsListening();
+
     menuManager.update();
 
     u32 kDown = hidKeysDown();
-
-    if (kDown & KEY_B) {
-        menuManager.back();
-    }
 
     if (menuTitle != menuManager.getMenuTitle()){
         menuTitle = menuManager.getMenuTitle();
         menuTitleBuff = C2D_TextBufNew(64);
         C2D_TextFontParse(&menuTitleObj, font, menuTitleBuff, menuTitle.c_str());
         C2D_TextOptimize(&menuTitleObj);
+    }
+    if (wasListening || input.getIsListening()) return true;
+    
+    if ((kDown & KEY_B)) {
+        menuManager.back();
     }
 
     return true;

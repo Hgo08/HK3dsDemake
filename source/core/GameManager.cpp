@@ -2,6 +2,7 @@
 #include "GameManager.hpp"
 #include "State.hpp"
 #include "../states/MainMenu/MainMenuState.hpp"
+#include "KeybindsManager.hpp"
 
 using namespace std;
 

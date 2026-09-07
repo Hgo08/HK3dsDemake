@@ -7,28 +7,88 @@
 ControlsMenu::ControlsMenu(MainMenuState& state, MenuManager& menuManager)
     : state(state), menuManager(menuManager) {}
 
+ControlsMenu::~ControlsMenu() {
+    if (textBuff) {
+        C2D_TextBufDelete(textBuff);
+    }
+    if (buttons_sprites_sheet) {
+        C2D_SpriteSheetFree(buttons_sprites_sheet);
+    }
+}
+
+Action ControlsMenu::getActionForButtonIndex(int index) const {
+    switch (index) {
+        case 0:  return Action::Up;
+        case 1:  return Action::Left;
+        case 2:  return Action::Down;
+        case 3:  return Action::Right;
+        case 4:  return Action::Jump;
+        case 5:  return Action::QuickMap;
+        case 6:  return Action::Attack;
+        case 7:  return Action::SuperDash;
+        case 8:  return Action::Dash;
+        case 9:  return Action::DreamNail;
+        case 10: return Action::Focus;
+        case 11: return Action::QuickCast;
+        case 12: return Action::Inventory;
+        default: return Action::Count;
+    }
+}
+
+int ControlsMenu::getSpriteIndexForKey(u32 key) const {
+    if (key & KEY_A)                         return 0;  // button_A.png
+    if (key & KEY_B)                         return 1;  // button_B.png
+    if (key & KEY_X)                         return 2;  // button_X.png
+    if (key & KEY_Y)                         return 3;  // button_Y.png
+    if (key & KEY_L)                         return 4;  // button_L.png
+    if (key & KEY_R)                         return 5;  // button_R.png
+    if (key & KEY_ZL)                        return 6;  // button_ZL.png
+    if (key & KEY_ZR)                        return 7;  // button_ZR.png
+    if (key & (KEY_DLEFT | KEY_CPAD_LEFT))   return 8;  // button_left.png
+    if (key & (KEY_DRIGHT | KEY_CPAD_RIGHT)) return 9;  // button_right.png
+    if (key & (KEY_DUP | KEY_CPAD_UP))       return 10; // button_up.png
+    if (key & (KEY_DDOWN | KEY_CPAD_DOWN))   return 11; // button_down.png
+
+    return -1;
+}
+
 bool ControlsMenu::init() {
 
     textBuff = C2D_TextBufNew(128);
 
     buttons_sprites_sheet = C2D_SpriteSheetLoad("romfs:/gfx/buttons.t3x");
-    for (int i = 0; i < 12; i++) {
-        images[i] = C2D_SpriteSheetGetImage(buttons_sprites_sheet, i);
+    if (buttons_sprites_sheet) {
+        for (int i = 0; i < 12; i++) {
+            images[i] = C2D_SpriteSheetGetImage(buttons_sprites_sheet, i);
+        }
     }
+
 
 
     for (int i = 0; i < 6; i++) {
+        int leftIndex = i * 2;
+        Action leftAction = getActionForButtonIndex(leftIndex);
         auto buttonsLeft = std::make_unique<Button>();
-        buttonsLeft->init(20, i*22+50, 120, 20);
+        buttonsLeft->init(20, i*22+50, 120, 20, [leftAction](){
+            KeybindsManager::getInstance().startListening(leftAction);
+        });
         buttons.push_back(std::move(buttonsLeft));
 
+        int rightIndex = i * 2 + 1;
+        Action rightAction = getActionForButtonIndex(rightIndex);
         auto buttonsRight = std::make_unique<Button>();
-        buttonsRight->init(180, i*22+50, 120, 20);
+        buttonsRight->init(180, i*22+50, 120, 20, [rightAction](){
+            KeybindsManager::getInstance().startListening(rightAction);
+        });
         buttons.push_back(std::move(buttonsRight));
     }
-
+    
+    // Inventory button (Row 6)
+    Action inventoryAction = getActionForButtonIndex(12);
     auto buttonsLeft = std::make_unique<Button>();
-    buttonsLeft->init(100, 6*22+50, 120, 20);
+    buttonsLeft->init(100, 6*22+50, 120, 20, [inventoryAction](){
+        KeybindsManager::getInstance().startListening(inventoryAction);
+    });
     buttons.push_back(std::move(buttonsLeft));
 
     C2D_TextFontParse(&texts[0], state.font, textBuff, "Up");
@@ -46,10 +106,13 @@ bool ControlsMenu::init() {
     C2D_TextFontParse(&texts[11], state.font, textBuff, "Quick cast");
 
     C2D_TextFontParse(&texts[12], state.font, textBuff, "Inventory");
-
+    
+    C2D_TextFontParse(&listeningText, state.font, textBuff, "Press...");
+    
     for (int i = 0; i < 13; i++) {
         C2D_TextOptimize(&texts[i]);
     }
+    C2D_TextOptimize(&listeningText);
 
     auto btnBack = std::make_unique<TextButton>();
     btnBack->init(state.font, textBuff, "Back", -1, 215, 0.65, 10, 10, [this]() {
@@ -61,6 +124,11 @@ bool ControlsMenu::init() {
 }
 
 void ControlsMenu::update() {
+    KeybindsManager& input = KeybindsManager::getInstance();
+    if (input.getIsListening()) {
+        input.update();
+        return;
+    }
     menuNavegation();
 }
 
@@ -69,22 +137,32 @@ void ControlsMenu::renderTop() {
 }
 
 void ControlsMenu::renderBott() {
+    // render UI Buttons and selection outlines
     for (size_t i = 0; i < buttons.size(); ++i) {
         bool isSelected = (static_cast<int>(i) == selectedButtonIndex);
-
         buttons[i]->render(isSelected);
 
         if (isSelected) {
-            drawSelectionDecorators(*buttons[i], state.selected_text_decorator, 3, 0.6);
+            drawSelectionDecorators(*buttons[i], state.selected_text_decorator, 3, 0.6f);
         }
     }
+
+    // render Left and Right grid columns
     for (int i = 0; i < 6; i++) {
-        C2D_DrawText(&texts[i], C2D_WithColor, 20, i*22+52.5,  0.5f, 0.6, 0.6, C2D_Color32(255, 255, 255, 255));
-        C2D_DrawText(&texts[i+6], C2D_WithColor, 180, i*22+52.5,  0.5f, 0.6, 0.6, C2D_Color32(255, 255, 255, 255));
-        C2D_DrawImageAt(images[i], 120, i*22+52.5, 0, NULL, 0.5, 0.5);
-        C2D_DrawImageAt(images[i+6], 280, i*22+52.5, 0, NULL, 0.5, 0.5);
+        float yPos = i * 22 + 52.5f;
+
+        // Left Column (Grid Index: i * 2)
+        Action leftAction = getActionForButtonIndex(i * 2);
+        renderActionButton(leftAction, 20.0f, 120.0f, yPos, i);
+
+        // Right Column (Grid Index: i * 2 + 1)
+        Action rightAction = getActionForButtonIndex(i * 2 + 1);
+        renderActionButton(rightAction, 180.0f, 280.0f, yPos, i + 6);
     }
-    C2D_DrawText(&texts[12], C2D_WithColor, 100, 6*22+52,  0.5f, 0.55, 0.55, C2D_Color32(255, 255, 255, 255));
+
+    // render Inventory Row (Row 6, Index 12)
+    Action inventoryAction = getActionForButtonIndex(12);
+    renderActionButton(inventoryAction, 100.0f, 200.0f, 6 * 22 + 52.0f, 12);
 }
 
 void ControlsMenu::back() {
@@ -166,5 +244,26 @@ void ControlsMenu::menuNavegation() {
     // Trigger action
     if (kDown & KEY_A) {
         buttons[selectedButtonIndex]->click();
+    }
+}
+
+void ControlsMenu::renderActionButton(Action action, float labelX, float spriteX, float yPos, int labelTextIndex) {
+    KeybindsManager& input = KeybindsManager::getInstance();
+
+    // Render Action Label Text
+    C2D_DrawText(&texts[labelTextIndex], C2D_WithColor, labelX, yPos, 0.5f, 0.55f, 0.55f, C2D_Color32(255, 255, 255, 255));
+
+    // If currently listening for this action, render waiting prompt
+    if (input.getIsListening() && input.getActionBeingRebound() == action) {
+        C2D_DrawText(&listeningText, C2D_WithColor, spriteX - 10, yPos, 0.5f, 0.45f, 0.45f, C2D_Color32(255, 255, 0, 255));
+        return;
+    }
+
+    // Render bound key sprite icon
+    u32 boundKey = input.getBoundKey(action);
+    int spriteIndex = getSpriteIndexForKey(boundKey);
+
+    if (spriteIndex >= 0 && spriteIndex < 12 && buttons_sprites_sheet) {
+        C2D_DrawImageAt(images[spriteIndex], spriteX, yPos, 0.5f, NULL, 0.5f, 0.5f);
     }
 }
