@@ -2,6 +2,7 @@
 #include "../MainMenuState.hpp"
 #include "../../../core/UI/MenuManager.hpp"
 #include "MainMenuView.hpp"
+#include "ControlsMenu.hpp"
 #include <cstddef>
 #include <memory>
 
@@ -13,11 +14,17 @@ OptionsMenu::OptionsMenu(MainMenuState& state, MenuManager& menuManager)
 bool OptionsMenu::init() {
     textBuff = C2D_TextBufNew(256);
 
-    for (int i = 0; i < 6; i++) {
-        auto btn = std::make_unique<TextButton>();
-        btn->init(state.font, textBuff, "Start Game", -1, i*25+58, 0.6);
-        buttons.push_back(std::move(btn));
-    }
+    auto btn = std::make_unique<TextButton>();
+    btn->init(state.font, textBuff, "Controls", -1, 0*25+58, 0.6, 10, 10, [this](){
+        menuManager.changeMenu(std::make_unique<ControlsMenu>(state, menuManager));
+    });
+    buttons.push_back(std::move(btn));
+
+    //for (int i = 1; i < 6; i++) {
+    //    auto btn = std::make_unique<TextButton>();
+    //    btn->init(state.font, textBuff, "Example Button", -1, i*25+58, 0.6);
+    //    buttons.push_back(std::move(btn));
+    //}
     
     auto btnBack = std::make_unique<TextButton>();
     btnBack->init(state.font, textBuff, "Back", -1, 215, 0.65, 10, 10, [this]() {

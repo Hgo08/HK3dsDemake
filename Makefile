@@ -37,11 +37,10 @@ APP_AUTHOR := Hgo08
 
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	$(shell find source -type d)
+SOURCES		:=	$(patsubst $(TOPDIR)/%,%,$(shell find $(TOPDIR)/source -type d))
 DATA		:=	data
 INCLUDES	:=	include
-GRAPHICS	:=	gfx
-GFXBUILD	:=	$(BUILD)
+GRAPHICS	:=	$(patsubst $(TOPDIR)/%,%,$(shell find $(TOPDIR)/gfx -type d))
 ROMFS		:=	romfs
 GFXBUILD	:=	$(ROMFS)/gfx
 

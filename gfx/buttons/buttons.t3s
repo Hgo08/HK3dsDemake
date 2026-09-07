@@ -1,0 +1,13 @@
+--atlas -f rgba8888 -z auto
+button_A.png
+button_B.png
+button_X.png
+button_Y.png
+button_L.png
+button_R.png
+button_ZL.png
+button_ZR.png
+button_left.png
+button_right.png
+button_up.png
+button_down.png
