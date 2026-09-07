@@ -1,6 +1,7 @@
 #include "MainMenuView.hpp"
 #include "OptionsMenu.hpp"
 #include "SavesMenu.hpp"
+#include "ConfirmExitMenu.hpp"
 
 #include "../MainMenuState.hpp"
 #include "../../PlayState.hpp"
@@ -61,4 +62,5 @@ void MainMenuView::renderBott() {
 }
 
 void MainMenuView::back() {
+    menuManager.changeMenu(std::make_unique<ConfirmExitMenu>(state, menuManager));
 }
