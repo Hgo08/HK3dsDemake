@@ -32,7 +32,7 @@ bool MainMenuView::init() {
 
     auto btnExit = std::make_unique<TextButton>();
     btnExit->init(state.font, textBuff, "Exit Game", -1, 160, 1, 10, 10, [this]() {
-        menuManager.clear();
+        back();
     });
     buttons.push_back(std::move(btnExit));
 
