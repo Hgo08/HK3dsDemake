@@ -1,4 +1,5 @@
 #include "KeybindsManager.hpp"
+#include "3ds/services/hid.h"
 #include <filesystem>
 #include <fstream>
 
@@ -13,12 +14,19 @@ KeybindsManager& KeybindsManager::getInstance() {
 }
 
 void KeybindsManager::setDefaults() {
-    bindings[Action::Up]     = KEY_DUP | KEY_CPAD_UP;
-    bindings[Action::Down]   = KEY_DDOWN | KEY_CPAD_DOWN;
-    bindings[Action::Left]   = KEY_DLEFT | KEY_CPAD_LEFT;
-    bindings[Action::Right]  = KEY_DRIGHT | KEY_CPAD_RIGHT;
-    bindings[Action::Jump]   = KEY_A;
-    bindings[Action::Attack] = KEY_Y;
+    bindings[Action::Up]        = KEY_DUP | KEY_CPAD_UP;
+    bindings[Action::Down]      = KEY_DDOWN | KEY_CPAD_DOWN;
+    bindings[Action::Left]      = KEY_DLEFT | KEY_CPAD_LEFT;
+    bindings[Action::Right]     = KEY_DRIGHT | KEY_CPAD_RIGHT;
+    bindings[Action::Jump]      = KEY_B;
+    bindings[Action::QuickMap]  = KEY_SELECT;
+    bindings[Action::Attack]    = KEY_R;
+    bindings[Action::SuperDash] = KEY_X;
+    bindings[Action::Dash]      = KEY_L;
+    bindings[Action::DreamNail] = KEY_A;
+    bindings[Action::Focus]     = KEY_Y;
+    //bindings[Action::QuickCast] = 
+    bindings[Action::Inventory] = KEY_START;
 }
 
 u32 KeybindsManager::normalizeKey(u32 key) const {
