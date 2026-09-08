@@ -1,5 +1,6 @@
 #include "../MainMenuState.hpp"
 #include "../../../core/UI/MenuManager.hpp"
+#include "3ds/services/hid.h"
 #include "OptionsMenu.hpp"
 #include "ControlsMenu.hpp"
 #include <memory>
@@ -108,11 +109,15 @@ bool ControlsMenu::init() {
     C2D_TextFontParse(&texts[12], state.font, textBuff, "Inventory");
     
     C2D_TextFontParse(&listeningText, state.font, textBuff, "Press...");
+    C2D_TextFontParse(&selectButtonText, state.font, textBuff, "SELECT");
+    C2D_TextFontParse(&startButtonText, state.font, textBuff, "START");
     
     for (int i = 0; i < 13; i++) {
         C2D_TextOptimize(&texts[i]);
     }
     C2D_TextOptimize(&listeningText);
+    C2D_TextOptimize(&selectButtonText);
+    C2D_TextOptimize(&startButtonText);
 
     auto btnBack = std::make_unique<TextButton>();
     btnBack->init(state.font, textBuff, "Back", -1, 215, 0.65, 10, 10, [this]() {
@@ -262,6 +267,13 @@ void ControlsMenu::renderActionButton(Action action, float labelX, float spriteX
     // Render bound key sprite icon
     u32 boundKey = input.getBoundKey(action);
     int spriteIndex = getSpriteIndexForKey(boundKey);
+
+    if (boundKey & KEY_SELECT) {
+        C2D_DrawText(&selectButtonText, C2D_WithColor, spriteX - 10, yPos, 0.5f, 0.45f, 0.45f, C2D_Color32(255, 255, 255, 255));
+    }
+    if (boundKey & KEY_START) {
+        C2D_DrawText(&startButtonText, C2D_WithColor, spriteX - 10, yPos, 0.5f, 0.45f, 0.45f, C2D_Color32(255, 255, 255, 255));
+    }
 
     if (spriteIndex >= 0 && spriteIndex < 12 && buttons_sprites_sheet) {
         C2D_DrawImageAt(images[spriteIndex], spriteX, yPos, 0.5f, NULL, 0.5f, 0.5f);

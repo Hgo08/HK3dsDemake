@@ -15,6 +15,8 @@ private:
     MenuManager& menuManager;
     C2D_TextBuf textBuff;
     C2D_Text listeningText;
+    C2D_Text selectButtonText;
+    C2D_Text startButtonText;
 
     Action getActionForButtonIndex(int index) const;
     int getSpriteIndexForKey(u32 key) const;
